@@ -1,68 +1,91 @@
-# Trabalho 1 - Análise de um Sistema Adversarial
-## Modelo estático, modelo dinâmico, ameaças e riscos
+<div align="center">
 
-* **Link da Apresentação em Slides (PDF):** [Inserir link do Google Drive aqui]
-* **Link do Vídeo de Apresentação (YouTube / gravado via Canva):** [Inserir link do YouTube aqui]
+# Análise de um Sistema Adversarial
+### Trabalho 1 — Modelo Estático, Modelo Dinâmico, Ameaças e Riscos
+
+<p align="center">
+  <b>Etapa de Planejamento e Desenho Arquitetural</b><br>
+  <i>Especificação conceitual e estratégica para a implementação funcional no Trabalho 2</i>
+</p>
+
+[![Fase](https://img.shields.io/badge/Fase-Planejamento%20e%20Arquitetura-0969da?style=flat-square)](#)
+[![Segurança](https://img.shields.io/badge/Foco-Segurança%20Adversarial-d73a49?style=flat-square)](#)
+
+</div>
 
 ---
 
-### Integrantes do Grupo
+### 📌 Materiais de Apresentação
 
-| Nome Completo | Matrícula |
-|---|---|
-| Artur Wahlbrink Kraemer | |
-| Fade Hassan Husein Kanaan | |
-| Gabriel Camargo Ortiz | |
-| Rodrigo Thoma da Silva | 2510100608 |
+| Recurso | Formato / Plataforma | Link de Acesso |
+| :--- | :---: | :--- |
+| 📄 **Slides da Apresentação** | PDF (Google Drive) | [Inserir link do Google Drive aqui] |
+| 🎥 **Vídeo de Apresentação** | YouTube (Gravação Canva) | [Inserir link do YouTube aqui] |
+
+---
+
+### 👥 Integrantes do Grupo
+
+| 👤 Nome Completo |
+| :--- |
+| Artur Wahlbrink Kraemer |
+| Fade Hassan Husein Kanaan |
+| Gabriel Camargo Ortiz |
+| Rodrigo Thoma da Silva |
 
 ---
 
 ## 1. Proposta
 
-> **Questão central:** O que torna esse sistema adversarial, como os participantes tomam decisões e como a interação evolui ao longo das rodadas?
+> **Questão central:** *O que torna esse sistema adversarial, como os participantes tomam decisões e como a interação evolui ao longo das rodadas?*
 
-Este trabalho analisa a interação de **publicar e calcular avaliações de estabelecimentos** (nota de 1 a 5 estrelas e comentário) em plataformas como marketplaces e aplicativos de delivery.
+Este trabalho analisa a interação de **publicar e calcular avaliações de estabelecimentos** (nota de 1 a 5 estrelas e comentário) em plataformas digitais, como marketplaces e aplicativos de delivery.
 
 ### Por que o sistema é adversarial?
 
 Existe um conflito de interesse direto entre os participantes:
-* **Estabelecimentos comerciais maliciosos:** Dependem de uma nota alta para ter visibilidade e faturar mais. Por isso, têm incentivo para fraudar o sistema comprando avaliações falsas positivas para si (*astroturfing*) ou negativas para concorrentes (*review bombing*).
-* **A plataforma:** Precisa que as notas reflitam a realidade para manter a confiança dos consumidores. Se notas altas indicarem lugares ruins, os usuários abandonam o serviço.
+
+* **Estabelecimentos comerciais maliciosos:** Dependem de uma nota alta para obter visibilidade orgânica e faturar mais. Por isso, têm forte incentivo para fraudar o sistema comprando avaliações falsas positivas para si (*astroturfing*) ou negativas contra concorrentes (*review bombing*).
+* **A plataforma:** Precisa que as notas reflitam com fidelidade a realidade para preservar a confiança dos consumidores. Se estabelecimentos ruins exibirem notas altas, os clientes perdem a confiança e abandonam o serviço.
 
 ### Como os participantes tomam decisões?
 
-Ambos os lados agem estrategicamente avaliando custos e ganhos:
-* O estabelecimento fraudador avalia o custo de criar contas ou pagar por avaliações falsas contra o ganho financeiro de subir sua nota sem ser banido.
-* A plataforma decide o rigor dos seus filtros de bloqueio e de cálculo da média, buscando barrar fraudes sem punir ou desmotivar clientes legítimos com regras excessivas (evitando falsos positivos).
+Ambos os lados agem estrategicamente, ponderando custos operacionais contra ganhos esperados:
 
-### Como a interação evolui ao longo das rodadas?
+* **O atacante (fraudador):** Avalia o custo de criar/comprar contas e forjar avaliações contra o benefício financeiro de elevar sua nota média sem sofrer banimento.
+* **O defensor (plataforma):** Calibra o rigor dos filtros de bloqueio e dos algoritmos de média, buscando barrar fraudes sem gerar atrito excessivo nem punir clientes autênticos (minimizando falsos positivos).
 
-A disputa ocorre em ciclos de ação, observação e adaptação:
-1. O fraudador publica avaliações falsas para inflar sua média.
-2. O sistema detecta o padrão e descarta as avaliações ou penaliza a conta.
-3. O fraudador observa a resposta da plataforma e adapta sua tática (ex.: varia os textos, espaça os envios no tempo ou usa contas mais antigas).
-4. O sistema aprimora suas defesas, gerando uma corrida contínua de adaptações.
+###  Como a interação evolui ao longo das rodadas?
+
+A disputa se desenvolve em ciclos contínuos de ação, resposta, observação e adaptação:
+
+1. **Ação inicial:** O fraudador publica um lote de avaliações falsas em massa para inflar rapidamente sua média.
+2. **Resposta da defesa:** O sistema detecta o padrão anômalo, descarta as avaliações suspeitas e aplica restrições às contas.
+3. **Observação e adaptação:** O fraudador percebe a remoção e adapta sua tática (ex.: recorre a IA generativa para variar vocabulário, espaça os envios no tempo ou utiliza contas antigas com histórico).
+4. **Escalação:** O sistema aprimora suas defesas com checagens mais profundas (reputação histórica, correlação temporal e grafos), estabelecendo uma corrida armamentista contínua.
+
+>  **Nota de continuidade:** Esta etapa de planejamento e desenho arquitetural servirá de especificação direta para a implementação funcional do mecanismo no Trabalho 2.
 
 ---
 
 ## 2. Escolha do Sistema
 
-* **Sistema escolhido:** Plataforma de Reputação e Avaliação de Estabelecimentos (presente em apps de delivery, e-commerce e serviços locais).
-* **Interação específica delimitada:** Submissão de avaliação pós-consumo (nota de 1 a 5 estrelas e comentário textual) e o processamento dessa entrada para o cálculo da nota pública do estabelecimento.
-* **Justificativa da escolha atendendo aos critérios:**
-  1. **Pelo menos dois participantes capazes de tomar decisões:**
-     * *Estabelecimento comercial malicioso (ou operador contratado):* decide a frequência de envio de avaliações falsas, a nota atribuída, o perfil dos comentários e quais contas utilizar.
-     * *Mecanismo de moderação da plataforma:* decide se publica a avaliação imediatamente, se a descarta por suspeita de fraude ou se reduz seu peso no cálculo final com base em critérios de reputação da conta.
-  2. **Objetivos total ou parcialmente conflitantes:**
-     * O estabelecimento quer inflar sua nota média para atrair clientes e faturar mais, sem ser punido.
-     * A plataforma quer garantir que a nota pública reflita a experiência real dos consumidores, preservando a credibilidade do marketplace sem bloquear avaliações legítimas por engano.
-  3. **Uma regra, métrica ou decisão que possa ser explorada:**
-     * A fórmula de cálculo da nota média (ex.: média aritmética ou média ponderada simples) e o impacto direto que avaliações extremas (1 e 5 estrelas) causam no ranking, explorando a dificuldade do sistema em verificar presencialmente se cada consumo foi autêntico.
-  4. **Alguma resposta observável que permita reação ou adaptação:**
-     * O atacante observa publicamente se a nota média do estabelecimento aumentou, se o comentário ficou visível na página ou se a avaliação foi ocultada.
-     * Com base nessa resposta, o atacante adapta sua estratégia (ex.: alterando os padrões de texto via IA, reduzindo a cadência de envio ou adquirindo contas mais antigas).
-  5. **Escopo suficientemente pequeno para ser implementado no Trabalho 2:**
-     * A interação depende de um fluxo de dados enxuto: envio de payload (ID do estabelecimento, ID do usuário, nota, texto e timestamp), passagem por módulos de validação/filtro (regras de frequência, análise textual básica e reputação da conta) e recálculo da nota média. Esse fluxo pode ser implementado e simulado com poucas classes ou endpoints em Python, Node.js ou outra linguagem simples.
+###  Ficha Técnica da Interação
+
+| Atributo | Definição no Projeto |
+| :--- | :--- |
+| **Sistema Escolhido** | Plataforma de Reputação e Avaliação de Estabelecimentos (presente em apps de delivery, e-commerce e serviços locais). |
+| **Interação Específica** | Submissão de avaliação pós-consumo (nota de 1 a 5 estrelas e comentário textual) e o processamento dessa entrada para o recálculo da nota pública do estabelecimento. |
+
+###  Conformidade com os Critérios do Enunciado
+
+| # | Critério Obrigatório | Atendimento no Sistema Analisado |
+| :-: | :--- | :--- |
+| **1** | **Dois participantes com tomada de decisão** | • **Estabelecimento malicioso (ou operador):** decide a frequência de envio, notas atribuídas, perfis textuais e quais contas utilizar.<br>• **Mecanismo de moderação da plataforma:** decide se publica imediatamente, se descarta por suspeita de fraude ou se reduz o peso da nota com base na reputação do perfil. |
+| **2** | **Objetivos total ou parcialmente conflitantes** | • **Estabelecimento:** quer inflar artificialmente a nota média para atrair clientes e faturar mais, sem ser punido.<br>• **Plataforma:** quer garantir que a nota pública reflita a experiência real de consumo, protegendo a credibilidade do marketplace sem barrar avaliações legítimas. |
+| **3** | **Regra, métrica ou decisão explorável** | A fórmula de cálculo da nota média (ex.: média aritmética ou média ponderada simples) e a influência imediata de notas extremas (1 e 5 estrelas), aproveitando a impossibilidade prática de o sistema verificar presencialmente se cada consumo foi autêntico. |
+| **4** | **Resposta observável e adaptação** | O atacante observa publicamente se a nota média do estabelecimento aumentou, se o comentário foi publicado ou se o perfil foi sinalizado. A partir dessa observação, adapta sua estratégia (variando textos com IA, reduzindo a cadência ou adquirindo contas mais antigas). |
+| **5** | **Escopo viável para o Trabalho 2** | Fluxo de dados enxuto: envio de payload (`estabelecimento_id`, `usuario_id`, `nota`, `texto`, `timestamp`) $\rightarrow$ passagem por regras/filtros de moderação $\rightarrow$ recálculo da nota média. Escopo modular e plenamente viável de ser simulado e implementado em poucas classes ou endpoints (Python ou Node.js). |
 
 ---
 
