@@ -47,16 +47,22 @@ A disputa ocorre em ciclos de ação, observação e adaptação:
 
 ## 2. Escolha do Sistema
 
-*[Indicar o sistema escolhido e a interação específica analisada. Atenção: não analisar um domínio inteiro, mas sim uma interação específica, como publicar uma avaliação, comprar um ingresso, reservar um horário ou receber uma recompensa.]*
-
-* **Sistema escolhido:** 
-* **Interação específica delimitada:** 
+* **Sistema escolhido:** Plataforma de Reputação e Avaliação de Estabelecimentos (presente em apps de delivery, e-commerce e serviços locais).
+* **Interação específica delimitada:** Submissão de avaliação pós-consumo (nota de 1 a 5 estrelas e comentário textual) e o processamento dessa entrada para o cálculo da nota pública do estabelecimento.
 * **Justificativa da escolha atendendo aos critérios:**
-  1. *Pelo menos dois participantes capazes de tomar decisões:*
-  2. *Objetivos total ou parcialmente conflitantes:*
-  3. *Uma regra, métrica ou decisão que possa ser explorada:*
-  4. *Alguma resposta observável que permita reação ou adaptação:*
-  5. *Escopo suficientemente pequeno para ser implementado no Trabalho 2:*
+  1. **Pelo menos dois participantes capazes de tomar decisões:**
+     * *Estabelecimento comercial malicioso (ou operador contratado):* decide a frequência de envio de avaliações falsas, a nota atribuída, o perfil dos comentários e quais contas utilizar.
+     * *Mecanismo de moderação da plataforma:* decide se publica a avaliação imediatamente, se a descarta por suspeita de fraude ou se reduz seu peso no cálculo final com base em critérios de reputação da conta.
+  2. **Objetivos total ou parcialmente conflitantes:**
+     * O estabelecimento quer inflar sua nota média para atrair clientes e faturar mais, sem ser punido.
+     * A plataforma quer garantir que a nota pública reflita a experiência real dos consumidores, preservando a credibilidade do marketplace sem bloquear avaliações legítimas por engano.
+  3. **Uma regra, métrica ou decisão que possa ser explorada:**
+     * A fórmula de cálculo da nota média (ex.: média aritmética ou média ponderada simples) e o impacto direto que avaliações extremas (1 e 5 estrelas) causam no ranking, explorando a dificuldade do sistema em verificar presencialmente se cada consumo foi autêntico.
+  4. **Alguma resposta observável que permita reação ou adaptação:**
+     * O atacante observa publicamente se a nota média do estabelecimento aumentou, se o comentário ficou visível na página ou se a avaliação foi ocultada.
+     * Com base nessa resposta, o atacante adapta sua estratégia (ex.: alterando os padrões de texto via IA, reduzindo a cadência de envio ou adquirindo contas mais antigas).
+  5. **Escopo suficientemente pequeno para ser implementado no Trabalho 2:**
+     * A interação depende de um fluxo de dados enxuto: envio de payload (ID do estabelecimento, ID do usuário, nota, texto e timestamp), passagem por módulos de validação/filtro (regras de frequência, análise textual básica e reputação da conta) e recálculo da nota média. Esse fluxo pode ser implementado e simulado com poucas classes ou endpoints em Python, Node.js ou outra linguagem simples.
 
 ---
 
