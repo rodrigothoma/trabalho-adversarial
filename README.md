@@ -93,19 +93,41 @@ A disputa se desenvolve em ciclos contínuos de ação, resposta, observação e
 
 ### 3.1 Descrição do Sistema Adversarial
 
-* **Qual é o sistema e qual interação será analisada:**
-* **Quais são os principais atores:**
-* **Qual é o objetivo de cada ator:**
-* **Qual ativo ou propriedade precisa ser preservado (justiça, confiança, privacidade, disponibilidade, distribuição correta de um recurso, etc.):**
-* **Quais ações ou capacidades cada ator possui:**
-* **Quais informações cada ator consegue observar:**
-* **Quais custos ou restrições limitam suas ações:**
-* **Pelo menos dois pressupostos dos quais o sistema depende:**
-  1. *Pressuposto 1:*
-  2. *Pressuposto 2:*
-* **Como esses pressupostos podem falhar:**
-  1. *Falha do Pressuposto 1:*
-  2. *Falha do Pressuposto 2:*
+* **Qual é o sistema e qual interação será analisada:**  
+  Plataforma de Avaliação e Reputação de Estabelecimentos Comerciais. A interação analisada é a **submissão de avaliação pós-consumo** (atribuição de nota de 1 a 5 estrelas e comentário em texto) e o subsequente processamento pelo sistema para recálculo da nota média pública do estabelecimento.
+
+* **Quais são os principais atores:**  
+  * **Estabelecimento Comercial Malicioso (Atacante):** Estabelecimento ou intermediário contratado (fazenda de avaliações) que busca manipular intencionalmente a nota pública.
+  * **Motor de Moderação e Reputação da Plataforma (Defensor):** Sistema automatizado responsável por validar, filtrar, ponderar e consolidar as avaliações no índice público.
+  * *(Ator de contexto): Consumidor Legítimo:* Usuário real que consome os serviços, orienta suas decisões pela nota média e publica avaliações espontâneas.
+
+* **Qual é o objetivo de cada ator:**  
+  * **Estabelecimento Malicioso:** Maximizar sua nota média (ou derrubar concorrentes diretos) para obter mais visibilidade e faturamento, minimizando o custo das fraudes e evitando sanções (como suspensão ou banimento).
+  * **Plataforma (Defensor):** Garantir que a nota pública reflita com fidelidade a satisfação dos consumidores reais, preservando a confiabilidade do serviço sem bloquear avaliações legítimas por falsos positivos.
+
+* **Qual ativo ou propriedade precisa ser preservado:**  
+  * **Confiança (Integridade da Informação):** Certeza de que as notas exibidas correspondem a experiências autênticas de clientes reais.
+  * **Justiça Distributiva (Concorrência Leal):** Garantia de que estabelecimentos com melhor serviço tenham o devido destaque, sem distorção artificial provocada por fraudes.
+
+* **Quais ações ou capacidades cada ator possui:**  
+  * **Estabelecimento Malicioso:** Criar ou adquirir contas de usuários; submeter notas e comentários gerados manual ou automaticamente; realizar microcompras para simular pedidos reais; controlar a frequência e a dispersão temporal dos envios.
+  * **Plataforma:** Inspecionar metadados de cada submissão (IP, dispositivo, timestamp e histórico de pedidos); aprovar ou descartar avaliações; aplicar pesos diferentes às avaliações no cálculo da nota; suspender contas fraudulentas.
+
+* **Quais informações cada ator consegue observar:**  
+  * **O Estabelecimento Malicioso observa:** A nota média pública consolidada na página; a presença ou ausência dos comentários submetidos no feed público; o status de retorno da requisição de envio (sucesso ou erro); eventuais alertas ou bloqueios aplicados às contas.
+  * **A Plataforma observa:** O volume e a cadência de avaliações por estabelecimento e por usuário; o histórico de compras e tempo de vida de cada conta; similaridades textuais entre comentários; metadados de rede (endereço IP, user-agent e fingerprint do dispositivo).
+
+* **Quais custos ou restrições limitam suas ações:**  
+  * **Restrições do Estabelecimento Malicioso:** Custo financeiro para obter contas e realizar compras mínimas que liberam o formulário de avaliação; esforço operacional para variar textos e contornar filtros; risco de punição severa ou perda definitiva do faturamento na plataforma em caso de banimento.
+  * **Restrições da Plataforma:** Custo computacional para processar algoritmos de análise comportamental e textual; risco de atrito excessivo para clientes reais caso as exigências de verificação sejam muito burocráticas; risco de falsos positivos (descartar avaliações legítimas e prejudicar usuários honestos).
+
+* **Pelo menos dois pressupostos dos quais o sistema depende:**  
+  1. *Pressuposto da Autenticidade por Compra Real:* O sistema assume que uma avaliação vinculada a um pedido concluído e pago representa uma opinião genuína e desinteressada de um cliente real.
+  2. *Pressuposto da Independência dos Avaliadores:* O sistema assume que os usuários avaliam os estabelecimentos de maneira isolada e espontânea, sem coordenação intencional de notas ou horários entre diferentes contas.
+
+* **Como esses pressupostos podem falhar:**  
+  1. *Falha do Pressuposto 1 (Compras Falsas / Microtransações):* Estabelecimentos desonestos podem realizar pedidos de valor irrisório ou compras fictícias combinadas internamente apenas para satisfazer a regra de "compra confirmada", liberando o formulário para injetar notas falsas.
+  2. *Falha do Pressuposto 2 (Ataques Coordenados):* Uma única pessoa ou fazenda de avaliações pode controlar dezenas de contas distintas e coordenar disparos sincronizados ou com atrasos programados, quebrando a premissa de que cada avaliação reflete uma amostra independente de satisfação.
 
 #### Tabela de Atores
 
