@@ -21,7 +21,27 @@
 
 > **Questão central:** O que torna esse sistema adversarial, como os participantes tomam decisões e como a interação evolui ao longo das rodadas?
 
-*[Apresentar uma introdução clara sobre a proposta do trabalho, contextualizando a interação escolhida e o problema a ser analisado.]*
+Este trabalho analisa a interação de **publicar e calcular avaliações de estabelecimentos** (nota de 1 a 5 estrelas e comentário) em plataformas como marketplaces e aplicativos de delivery.
+
+### Por que o sistema é adversarial?
+
+Existe um conflito de interesse direto entre os participantes:
+* **Estabelecimentos comerciais maliciosos:** Dependem de uma nota alta para ter visibilidade e faturar mais. Por isso, têm incentivo para fraudar o sistema comprando avaliações falsas positivas para si (*astroturfing*) ou negativas para concorrentes (*review bombing*).
+* **A plataforma:** Precisa que as notas reflitam a realidade para manter a confiança dos consumidores. Se notas altas indicarem lugares ruins, os usuários abandonam o serviço.
+
+### Como os participantes tomam decisões?
+
+Ambos os lados agem estrategicamente avaliando custos e ganhos:
+* O estabelecimento fraudador avalia o custo de criar contas ou pagar por avaliações falsas contra o ganho financeiro de subir sua nota sem ser banido.
+* A plataforma decide o rigor dos seus filtros de bloqueio e de cálculo da média, buscando barrar fraudes sem punir ou desmotivar clientes legítimos com regras excessivas (evitando falsos positivos).
+
+### Como a interação evolui ao longo das rodadas?
+
+A disputa ocorre em ciclos de ação, observação e adaptação:
+1. O fraudador publica avaliações falsas para inflar sua média.
+2. O sistema detecta o padrão e descarta as avaliações ou penaliza a conta.
+3. O fraudador observa a resposta da plataforma e adapta sua tática (ex.: varia os textos, espaça os envios no tempo ou usa contas mais antigas).
+4. O sistema aprimora suas defesas, gerando uma corrida contínua de adaptações.
 
 ---
 
