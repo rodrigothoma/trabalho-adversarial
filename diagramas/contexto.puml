@@ -1,0 +1,74 @@
+@startuml contexto
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam roundCorner 8
+skinparam arrowColor #334155
+skinparam arrowThickness 1.5
+
+skinparam package {
+    BorderColor #2563EB
+    BackgroundColor #EFF6FF
+    FontColor #1E40AF
+}
+
+skinparam component {
+    BackgroundColor #FFFFFF
+    BorderColor #3B82F6
+    FontColor #0F172A
+}
+
+skinparam database {
+    BackgroundColor #FFFFFF
+    BorderColor #3B82F6
+    FontColor #0F172A
+}
+
+skinparam actor {
+    BorderColor #334155
+}
+
+header Engenharia de Software Adversarial - Trabalho 1
+title Diagrama de Contexto: Sistema de Flash Sale sob Ameaça Adversarial\nInteração de Compra de Itens Escassos (Scalper Bots vs. E-Commerce Fair Allocation)
+
+actor "Consumidor Legítimo\n(Cliente Real)" as Legitimo #E0F2FE
+actor "Operador de Scalper Bots\n(Atacante Estratégico)" as Scalper #FEE2E2
+
+package "Plataforma de E-Commerce (Perímetro Defensivo)" #EFF6FF {
+    component "Borda & API Gateway\n---\n• Rate Limiting por IP\n• Fingerprinting TLS/JA3\n• Filtro de GeoIP e Reputação" as WAF #FFFFFF
+    component "Fila Virtual & Desafio\n---\n• Waiting Room (Queue-it)\n• Desafio PoW e CAPTCHA\n• Emissão de Token Assinado" as Queue #FFFFFF
+    component "Motor de Checkout\n---\n• Validação de Token de Fila\n• Validação de CPF e 2FA\n• Sorteio Ponderado / Ballot\n• Liquidação de Pagamento" as Checkout #FFFFFF
+    database "Inventário de Estoque\n---\n• Estoque Escasso (500 un.)\n• Controle Atômico (asyncio.Lock)\n• Expiração Curta de Holding Lock" as Estoque #FFFFFF
+}
+
+package "Mercado Secundário (Revenda Externa)" #FEF3C7 {
+    component "Marketplaces Paralelos & Redes Sociais\n---\n• Revenda com ágio de 200% a 400%\n• Extração do excedente do consumidor" as Revenda #FFFFFF
+}
+
+' Fluxos Legítimos
+Legitimo -[#0284C7,bold]-> WAF : 1. Requisição Manual\n(Latência 2-4s)
+WAF -[#2563EB]-> Queue : 2. Encaminhamento para Sala de Espera
+Queue -[#2563EB]-> Checkout : 3. Liberação com Token Criptografado
+Checkout -[#2563EB]-> Estoque : 4. Decremento Atômico de Estoque
+
+' Fluxos Adversariais
+Scalper -[#DC2626,bold]-> WAF : 1. Flood de Requisições Concorrentes\n(Centenas req/s via Proxies)
+Scalper .[#D97706,bold].> Revenda : 5. Monopolização e Revenda com Ágio
+Revenda .[#D97706,dashed].> Legitimo : 6. Compra Forçada por Preço Abusivo
+
+note right of Scalper #FEE2E2
+  <b><color:#991B1B>Objetivo Adversarial:</color></b>
+  Monopolizar as 500 unidades
+  superando a reação humana em
+  milissegundos para revenda lucrativa.
+end note
+
+note right of Estoque #F0FDF4
+  <b><color:#166534>Ativo Preservado:</color></b>
+  Justiça Distributiva (1 un./CPF),
+  Resiliência contra DoS e
+  Confiança na integridade da promoção.
+end note
+
+@enduml
