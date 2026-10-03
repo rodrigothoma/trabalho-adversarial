@@ -1,0 +1,59 @@
+@startuml superficie_de_ataque
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam roundCorner 8
+skinparam arrowThickness 1.5
+
+skinparam rectangle {
+    BackgroundColor #FFFFFF
+    BorderColor #64748B
+    BorderThickness 1.5
+    FontColor #0F172A
+}
+
+header Engenharia de Software Adversarial - Trabalho 1
+title Diagrama de Superfície de Ataque e Riscos\nMapeamento de Vetores de Ameaça, Interfaces Expostas, Controles de Defesa e Ativos Impactados
+
+package "Vetores de Ameaça (Atacante)" #FEE2E2 {
+    rectangle "<b>Vetor 1: Botnet Distribuída</b>\n---\n• Scripts assíncronos (aiohttp)\n• Proxies residenciais rotativos\n• Requisições paralelas maciças" as V1 #FFFFFF
+    rectangle "<b>Vetor 2: Automação Sybil</b>\n---\n• Criação em massa de contas\n• Dados cadastrais sintéticos\n• Fazendas de chips SIM / SMS" as V2 #FFFFFF
+    rectangle "<b>Vetor 3: Denial of Inventory</b>\n---\n• Bloqueio temporário de estoque\n• Retenção sem finalização (holding)\n• Especulação e estresse de venda" as V3 #FFFFFF
+}
+
+package "Superfície de Ataque (Pontos de Exploração)" #FEF3C7 {
+    rectangle "<b>[Ponto 1] Endpoint de Checkout</b>\nPOST /api/v1/checkout/orders\n---\n• Fraqueza: FIFO estrito e latência\ncomo critério único de desempate." as P1 #FFFFFF
+    rectangle "<b>[Ponto 2] Serviço de Contas</b>\nPOST /api/v1/auth/register\n---\n• Fraqueza: Cadastro sem custo de\nentrada ou validação de unicidade." as P2 #FFFFFF
+    rectangle "<b>[Ponto 3] Reserva de Carrinho</b>\nPUT /api/v1/cart/reserve\n---\n• Fraqueza: Holding lock com tempo\nexcessivo sem garantia de pagamento." as P3 #FFFFFF
+}
+
+package "Controles de Defesa & Mitigação" #EFF6FF {
+    rectangle "<b>Controle 1: Fila & Sorteio</b>\n---\n• Fila virtual com token assinado\n• Desafio PoW e CAPTCHA\n• Sorteio ponderado (quebra do FIFO)" as C1 #FFFFFF
+    rectangle "<b>Controle 2: Validação Forte</b>\n---\n• Auditoria de CPF na Receita Federal\n• Verificação 2FA (SMS/App Push)\n• Histórico de reputação da conta" as C2 #FFFFFF
+    rectangle "<b>Controle 3: Lock Agressivo</b>\n---\n• Timeout curto de reserva (2 min)\n• Liberação atômica em Redis/memória\n• Limite de 1 reserva por sessão" as C3 #FFFFFF
+}
+
+package "Ativos Críticos Impactados" #DCFCE7 {
+    rectangle "<b>Justiça Distributiva</b>\n<i>(Fair Allocation)</i>\n---\n• <b>Ameaça A1: Risco Crítico (9)</b>\n• Garantia de 1 produto por pessoa" as A1 #FFFFFF
+    rectangle "<b>Disponibilidade da API</b>\n<i>(Resiliência da Infra)</i>\n---\n• <b>Ameaça A2: Risco Alto (6)</b>\n• Prevenção contra DoS e sobrecarga" as A2 #FFFFFF
+    rectangle "<b>Confiança do Cliente</b>\n<i>(Reputação da Marca)</i>\n---\n• <b>Ameaça A3: Risco Médio (4)</b>\n• Satisfação e retenção comercial" as A3 #FFFFFF
+}
+
+' Relações de Exploração
+V1 -[#DC2626,bold]-> P1 : Explora
+V2 -[#DC2626,bold]-> P2 : Explora
+V3 -[#DC2626,bold]-> P3 : Explora
+
+' Relações de Mitigação
+P1 .[#2563EB,dashed].> C1 : Mitigado por
+P2 .[#2563EB,dashed].> C2 : Mitigado por
+P3 .[#2563EB,dashed].> C3 : Mitigado por
+
+' Relações de Impacto
+P1 -[#B45309,bold]-> A1 : Ameaça A1 (P=3, I=3, R=9)
+P1 -[#B45309]-> A2 : Sobrecarga DoS
+P2 -[#B45309,bold]-> A1 : Ameaça A2 (P=3, I=2, R=6)
+P3 -[#B45309,bold]-> A3 : Ameaça A3 (P=2, I=2, R=4)
+
+@enduml
