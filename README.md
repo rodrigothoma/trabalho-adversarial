@@ -4,12 +4,13 @@
 ### Trabalho 1 — Modelo Estático, Modelo Dinâmico, Ameaças e Riscos
 
 <p align="center">
-  <b>Etapa de Planejamento e Desenho Arquitetural</b><br>
-  <i>Especificação conceitual e estratégica para a implementação funcional no Trabalho 2</i>
+  <b>Engenharia de Software Adversarial</b><br>
+  <i>Etapa de Planejamento e Desenho Arquitetural para Implementação Funcional no Trabalho 2</i>
 </p>
 
 [![Fase](https://img.shields.io/badge/Fase-Planejamento%20e%20Arquitetura-0969da?style=flat-square)](#)
-[![Segurança](https://img.shields.io/badge/Foco-Segurança%20Adversarial-d73a49?style=flat-square)](#)
+[![Segurança](https://img.shields.io/badge/Foco-Seguran%C3%A7a%20Adversarial%20%26%20Teoria%20dos%20Jogos-d73a49?style=flat-square)](#)
+[![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento%20pelo%20Grupo-orange?style=flat-square)](#)
 
 </div>
 
@@ -19,73 +20,50 @@
 
 | Recurso | Formato / Plataforma | Link de Acesso |
 | :--- | :---: | :--- |
-| 📄 **Slides da Apresentação** | PDF (Google Drive) | [Inserir link do Google Drive aqui] |
-| 🎥 **Vídeo de Apresentação** | YouTube (Gravação Canva) | [Inserir link do YouTube aqui] |
+| 📄 **Slides da Apresentação** | PDF (Google Drive) | *[Inserir link do Google Drive aqui]* |
+| 🎥 **Vídeo de Apresentação** | YouTube (Gravação de Vídeo com Slides) | *[Inserir link do YouTube aqui]* |
+| 📜 **Roteiro dos Slides e Falas** | Markdown | [fontes/roteiro_apresentacao_slides.md](fontes/roteiro_apresentacao_slides.md) |
+| 📑 **Rascunho Base para Integrantes** | Markdown | [fontes/rascunho_completo_para_integrantes.md](fontes/rascunho_completo_para_integrantes.md) |
 
 ---
 
-### 👥 Integrantes do Grupo
+### 👥 Integrantes do Grupo e Divisão de Seções
 
-| 👤 Nome Completo |
-| :--- |
-| Artur Wahlbrink Kraemer |
-| Fade Hassan Husein Kanaan |
-| Gabriel Camargo Ortiz |
-| Rodrigo Thoma da Silva |
+| 👤 Nome Completo | Matrícula / Função Principal | Seções Atribuídas |
+| :--- | :--- | :--- |
+| **Rodrigo Thoma da Silva** | Proposta, Escolha do Sistema e Descrição Geral | **Seções 1, 2 e 3.1** |
+| **Fade Hassan Husein Kanaan** | Modelo Estático (Teoria dos Jogos 2x2) e Arquitetura para o T2 | **Seções 3.2 e 4** |
+| **Artur Wahlbrink Kraemer** | Modelo Dinâmico (Ciclo de 3 Rodadas) e Pergunta Final | **Seções 3.3 e 8** |
+| **Gabriel Camargo Ortiz** | Superfície de Ataque, Cenários de Risco, IA e Referências | **Seções 3.4, 5, 6 e 7** |
 
 ---
 
 ## 1. Proposta
 
-> **Questão central:** *O que torna esse sistema adversarial, como os participantes tomam decisões e como a interação evolui ao longo das rodadas?*
+> 👤 **Responsável pelo desenvolvimento:** Rodrigo Thoma da Silva  
+> 📝 *Rascunho base disponível para revisão e commit em [fontes/rascunho_completo_para_integrantes.md](fontes/rascunho_completo_para_integrantes.md)*
 
-Este trabalho analisa a interação de **publicar e calcular avaliações de estabelecimentos** (nota de 1 a 5 estrelas e comentário) em plataformas digitais, como marketplaces e aplicativos de delivery.
-
-### Por que o sistema é adversarial?
-
-Existe um conflito de interesse direto entre os participantes:
-
-* **Estabelecimentos comerciais maliciosos:** Dependem de uma nota alta para obter visibilidade orgânica e faturar mais. Por isso, têm forte incentivo para fraudar o sistema comprando avaliações falsas positivas para si (*astroturfing*) ou negativas contra concorrentes (*review bombing*).
-* **A plataforma:** Precisa que as notas reflitam com fidelidade a realidade para preservar a confiança dos consumidores. Se estabelecimentos ruins exibirem notas altas, os clientes perdem a confiança e abandonam o serviço.
-
-### Como os participantes tomam decisões?
-
-Ambos os lados agem estrategicamente, ponderando custos operacionais contra ganhos esperados:
-
-* **O atacante (fraudador):** Avalia o custo de criar/comprar contas e forjar avaliações contra o benefício financeiro de elevar sua nota média sem sofrer banimento.
-* **O defensor (plataforma):** Calibra o rigor dos filtros de bloqueio e dos algoritmos de média, buscando barrar fraudes sem gerar atrito excessivo nem punir clientes autênticos (minimizando falsos positivos).
-
-###  Como a interação evolui ao longo das rodadas?
-
-A disputa se desenvolve em ciclos contínuos de ação, resposta, observação e adaptação:
-
-1. **Ação inicial:** O fraudador publica um lote de avaliações falsas em massa para inflar rapidamente sua média.
-2. **Resposta da defesa:** O sistema detecta o padrão anômalo, descarta as avaliações suspeitas e aplica restrições às contas.
-3. **Observação e adaptação:** O fraudador percebe a remoção e adapta sua tática (ex.: recorre a IA generativa para variar vocabulário, espaça os envios no tempo ou utiliza contas antigas com histórico).
-4. **Escalação:** O sistema aprimora suas defesas com checagens mais profundas (reputação histórica, correlação temporal e grafos), estabelecendo uma corrida armamentista contínua.
-
->  **Nota de continuidade:** Esta etapa de planejamento e desenho arquitetural servirá de especificação direta para a implementação funcional do mecanismo no Trabalho 2.
+### Instruções para a Seção:
+* Responder à questão central: *O que torna esse sistema adversarial, como os participantes tomam decisões e como a interação evolui ao longo das rodadas?*
+* Delimitar a interação: **Checkout concorrente de produtos com estoque escasso em Flash Sales de Black Friday** (`POST /api/v1/checkout/orders` para 500 unidades).
+* Detalhar o conflito direto entre **Operadores de Scalper Bots** (monopolização para revenda com ágio de 300%) e a **Plataforma de E-Commerce** (justiça distributiva de 1 un./CPF e resiliência de infraestrutura).
+* Explicar como os participantes tomam decisões econômicas (custo de proxies vs. lucro de revenda) e como a interação evolui em corrida armamentista.
 
 ---
 
 ## 2. Escolha do Sistema
 
-###  Ficha Técnica da Interação
+> 👤 **Responsável pelo desenvolvimento:** Rodrigo Thoma da Silva  
+> 📝 *Rascunho base disponível para revisão e commit em [fontes/rascunho_completo_para_integrantes.md](fontes/rascunho_completo_para_integrantes.md)*
 
-| Atributo | Definição no Projeto |
-| :--- | :--- |
-| **Sistema Escolhido** | Plataforma de Reputação e Avaliação de Estabelecimentos (presente em apps de delivery, e-commerce e serviços locais). |
-| **Interação Específica** | Submissão de avaliação pós-consumo (nota de 1 a 5 estrelas e comentário textual) e o processamento dessa entrada para o recálculo da nota pública do estabelecimento. |
-
-###  Conformidade com os Critérios do Enunciado
-
-| # | Critério Obrigatório | Atendimento no Sistema Analisado |
-| :-: | :--- | :--- |
-| **1** | **Dois participantes com tomada de decisão** | • **Estabelecimento malicioso (ou operador):** decide a frequência de envio, notas atribuídas, perfis textuais e quais contas utilizar.<br>• **Mecanismo de moderação da plataforma:** decide se publica imediatamente, se descarta por suspeita de fraude ou se reduz o peso da nota com base na reputação do perfil. |
-| **2** | **Objetivos total ou parcialmente conflitantes** | • **Estabelecimento:** quer inflar artificialmente a nota média para atrair clientes e faturar mais, sem ser punido.<br>• **Plataforma:** quer garantir que a nota pública reflita a experiência real de consumo, protegendo a credibilidade do marketplace sem barrar avaliações legítimas. |
-| **3** | **Regra, métrica ou decisão explorável** | A fórmula de cálculo da nota média (ex.: média aritmética ou média ponderada simples) e a influência imediata de notas extremas (1 e 5 estrelas), aproveitando a impossibilidade prática de o sistema verificar presencialmente se cada consumo foi autêntico. |
-| **4** | **Resposta observável e adaptação** | O atacante observa publicamente se a nota média do estabelecimento aumentou, se o comentário foi publicado ou se o perfil foi sinalizado. A partir dessa observação, adapta sua estratégia (variando textos com IA, reduzindo a cadência ou adquirindo contas mais antigas). |
-| **5** | **Escopo viável para o Trabalho 2** | Fluxo de dados enxuto: envio de payload (`estabelecimento_id`, `usuario_id`, `nota`, `texto`, `timestamp`) $\rightarrow$ passagem por regras/filtros de moderação $\rightarrow$ recálculo da nota média. Escopo modular e plenamente viável de ser simulado e implementado em poucas classes ou endpoints (Python ou Node.js). |
+### Instruções para a Seção:
+* Preencher a **Ficha Técnica da Interação** (Sistema Escolhido, Interação Específica e Contexto de Operação).
+* Preencher a tabela de **Conformidade com os 5 Critérios Obrigatórios do Enunciado**:
+  1. Pelo menos dois participantes capazes de tomar decisões;
+  2. Objetivos total ou parcialmente conflitantes;
+  3. Regra, métrica ou decisão explorável (latência de rede e política FIFO estrita);
+  4. Resposta observável que permita reação ou adaptação (códigos HTTP, latência, tokens);
+  5. Escopo viável para implementação no Trabalho 2.
 
 ---
 
@@ -93,197 +71,228 @@ A disputa se desenvolve em ciclos contínuos de ação, resposta, observação e
 
 ### 3.1 Descrição do Sistema Adversarial
 
-* **Qual é o sistema e qual interação será analisada:**  
-  Plataforma de Avaliação e Reputação de Estabelecimentos Comerciais. A interação analisada é a **submissão de avaliação pós-consumo** (atribuição de nota de 1 a 5 estrelas e comentário em texto) e o subsequente processamento pelo sistema para recálculo da nota média pública do estabelecimento.
+> 👤 **Responsável pelo desenvolvimento:** Rodrigo Thoma da Silva  
+> 📝 *Rascunho base disponível para revisão e commit em [fontes/rascunho_completo_para_integrantes.md](fontes/rascunho_completo_para_integrantes.md)*
 
-* **Quais são os principais atores:**  
-  * **Estabelecimento Comercial Malicioso (Atacante):** Estabelecimento ou intermediário contratado (fazenda de avaliações) que busca manipular intencionalmente a nota pública.
-  * **Motor de Moderação e Reputação da Plataforma (Defensor):** Sistema automatizado responsável por validar, filtrar, ponderar e consolidar as avaliações no índice público.
-  * *(Ator de contexto): Consumidor Legítimo:* Usuário real que consome os serviços, orienta suas decisões pela nota média e publica avaliações espontâneas.
-
-* **Qual é o objetivo de cada ator:**  
-  * **Estabelecimento Malicioso:** Maximizar sua nota média (ou derrubar concorrentes diretos) para obter mais visibilidade e faturamento, minimizando o custo das fraudes e evitando sanções (como suspensão ou banimento).
-  * **Plataforma (Defensor):** Garantir que a nota pública reflita com fidelidade a satisfação dos consumidores reais, preservando a confiabilidade do serviço sem bloquear avaliações legítimas por falsos positivos.
-
-* **Qual ativo ou propriedade precisa ser preservado:**  
-  * **Confiança (Integridade da Informação):** Certeza de que as notas exibidas correspondem a experiências autênticas de clientes reais.
-  * **Justiça Distributiva (Concorrência Leal):** Garantia de que estabelecimentos com melhor serviço tenham o devido destaque, sem distorção artificial provocada por fraudes.
-
-* **Quais ações ou capacidades cada ator possui:**  
-  * **Estabelecimento Malicioso:** Criar ou adquirir contas de usuários; submeter notas e comentários gerados manual ou automaticamente; realizar microcompras para simular pedidos reais; controlar a frequência e a dispersão temporal dos envios.
-  * **Plataforma:** Inspecionar metadados de cada submissão (IP, dispositivo, timestamp e histórico de pedidos); aprovar ou descartar avaliações; aplicar pesos diferentes às avaliações no cálculo da nota; suspender contas fraudulentas.
-
-* **Quais informações cada ator consegue observar:**  
-  * **O Estabelecimento Malicioso observa:** A nota média pública consolidada na página; a presença ou ausência dos comentários submetidos no feed público; o status de retorno da requisição de envio (sucesso ou erro); eventuais alertas ou bloqueios aplicados às contas.
-  * **A Plataforma observa:** O volume e a cadência de avaliações por estabelecimento e por usuário; o histórico de compras e tempo de vida de cada conta; similaridades textuais entre comentários; metadados de rede (endereço IP, user-agent e fingerprint do dispositivo).
-
-* **Quais custos ou restrições limitam suas ações:**  
-  * **Restrições do Estabelecimento Malicioso:** Custo financeiro para obter contas e realizar compras mínimas que liberam o formulário de avaliação; esforço operacional para variar textos e contornar filtros; risco de punição severa ou perda definitiva do faturamento na plataforma em caso de banimento.
-  * **Restrições da Plataforma:** Custo computacional para processar algoritmos de análise comportamental e textual; risco de atrito excessivo para clientes reais caso as exigências de verificação sejam muito burocráticas; risco de falsos positivos (descartar avaliações legítimas e prejudicar usuários honestos).
-
-* **Pelo menos dois pressupostos dos quais o sistema depende:**  
-  1. *Pressuposto da Autenticidade por Compra Real:* O sistema assume que uma avaliação vinculada a um pedido concluído e pago representa uma opinião genuína e desinteressada de um cliente real.
-  2. *Pressuposto da Independência dos Avaliadores:* O sistema assume que os usuários avaliam os estabelecimentos de maneira isolada e espontânea, sem coordenação intencional de notas ou horários entre diferentes contas.
-
-* **Como esses pressupostos podem falhar:**  
-  1. *Falha do Pressuposto 1 (Compras Falsas / Microtransações):* Estabelecimentos desonestos podem realizar pedidos de valor irrisório ou compras fictícias combinadas internamente apenas para satisfazer a regra de "compra confirmada", liberando o formulário para injetar notas falsas.
-  2. *Falha do Pressuposto 2 (Ataques Coordenados):* Uma única pessoa ou fazenda de avaliações pode controlar dezenas de contas distintas e coordenar disparos sincronizados ou com atrasos programados, quebrando a premissa de que cada avaliação reflete uma amostra independente de satisfação.
-
-#### Tabela de Atores
-
-| Ator | Objetivo | Ações ou capacidades | Informações observáveis | Restrições ou custos |
-|---|---|---|---|---|
-| Ator 1 | | | | |
-| Ator 2 | | | | |
-
-#### Diagrama de Contexto
-
-![Diagrama de Contexto](diagramas/contexto.png)
-
-#### Natureza Adversarial do Caso
-
-*[Explicar por que o caso representa uma situação adversarial, e não apenas um erro ou acidente.]*
+### Instruções para a Seção:
+* Descrever detalhadamente: o sistema e interação analisada, principais atores (Scalper, Plataforma e Consumidor Legítimo), objetivo de cada ator, ativos a preservar (Justiça Distributiva, Disponibilidade e Confiança), ações/capacidades, informações observáveis e custos/restrições.
+* Descrever **pelo menos dois pressupostos** (Identidade Única e Latência Justa) e como eles falham (Ataque Sybil e Automação de Rede em Nuvem).
+* Preencher a **Tabela de Atores** (com as 5 colunas obrigatórias).
+* Incluir o **Diagrama de Contexto** (`diagramas/contexto.png` e código editável `diagramas/contexto.puml`).
+* Explicar a **natureza adversarial do caso** (cálculo de extração de excedente econômico vs. erro acidental).
 
 ---
 
 ### 3.2 Modelo Estratégico Estático
 
+> 👤 **Responsável pelo desenvolvimento:** Fade Hassan Husein Kanaan  
+> ✅ **Status:** Concluído e Especificado
+
+Para modelar a decisão central no instante de abertura da promoção relâmpago, definimos um jogo simultâneo em forma normal com dois jogadores e duas ações disponíveis para cada um:
+* **Jogador A (Scalper):**
+  * $A_1$ — **Flood de Bots Concorrentes:** Dispara automação em alta velocidade para capturar o maior número possível de unidades no instante de abertura.
+  * $A_2$ — **Compra Manual / Humana:** Respeita a interface gráfica oficial e a cadência de interação humana comum.
+* **Jogador B (Plataforma de E-Commerce):**
+  * $B_1$ — **Checkout Direto FIFO (Sem Fricção):** Arquitetura tradicional orientada à máxima conversão e mínima latência, sem validações comportamentais pesadas ou filas de espera.
+  * $B_2$ — **Fila Virtual Justa com Desafio de Integridade:** Mecanismo com sala de espera, análise de risco, desafio criptográfico e reserva controlada.
+
 #### Matriz de Decisão (Jogo 2x2)
 
-> Ordem dos payoffs no par: `(payoff do Jogador A, payoff do Jogador B)`  
-> Valores utilizados: escala de preferência simples (ex.: 0, 1, 2, 3)
+> **Ordem dos payoffs no par:** `(Payoff do Jogador A - Scalper, Payoff do Jogador B - Plataforma)`  
+> **Escala ordinal de preferência:** `3` = Melhor resultado; `2` = Bom resultado; `1` = Resultado desfavorável; `0` = Pior resultado.
 
-| Jogador A \ Jogador B | Ação B1: *[Nome da Ação]* | Ação B2: *[Nome da Ação]* |
-|---|:---:|:---:|
-| **Ação A1: *[Nome da Ação]*** | ( , ) | ( , ) |
-| **Ação A2: *[Nome da Ação]*** | ( , ) | ( , ) |
+| Jogador A (Scalper) \ Jogador B (Plataforma) | $B_1$: Checkout Direto FIFO (Sem Fricção) | $B_2$: Fila Justa com Desafio de Integridade |
+| :--- | :---: | :---: |
+| **$A_1$: Flood de Bots Concorrentes** | $(3, 0)$ | $(\mathbf{1}, \mathbf{2})$ |
+| **$A_2$: Compra Manual / Humana** | $(2, 3)$ | $(0, 1)$ |
 
 #### Análise do Modelo Estático
 
 * **O que representa cada ação:**
-  * *Ação A1:*
-  * *Ação A2:*
-  * *Ação B1:*
-  * *Ação B2:*
+  * **$A_1$ (Flood de Bots):** Utilização de scripts automatizados de alta concorrência para submeter ordens de compra em milissegundos.
+  * **$A_2$ (Compra Manual):** Submissão convencional via navegador ou app móvel, sujeita a tempos de reação e digitação humanos.
+  * **$B_1$ (Checkout Direto FIFO):** Processamento imediato por ordem de chegada de pacotes de rede, priorizando velocidade de checkout e simplicidade arquitetural.
+  * **$B_2$ (Fila Justa com Desafio):** Interposição de sala de espera virtual (*Waiting Room*), verificação de integridade e ordenação equitativa, reduzindo o impacto da velocidade pura.
+
 * **Por que cada resultado recebeu aqueles payoffs:**
-  * *(A1, B1):*
-  * *(A1, B2):*
-  * *(A2, B1):*
-  * *(A2, B2):*
+  * **$(A_1, B_1) \rightarrow (3, 0)$:** 
+    * *Scalper (3):* Conquista o melhor resultado possível. Os bots arrematam 100% do estoque promocional em milissegundos com custo operacional mínimo de evasão, garantindo lucro máximo de revenda no mercado secundário.
+    * *Plataforma (0):* Sofre o pior desfecho. O estoque é liquidado para especuladores, clientes reais ficam frustrados e acusam o evento de propaganda enganosa nas redes sociais, e a infraestrutura enfrenta sobrecarga severa de requisições.
+  * **$(A_1, B_2) \rightarrow (1, 2)$:** 
+    * *Scalper (1):* A maioria dos bots fica retida na fila virtual ou é barrada pelos desafios; para manter chances de sucesso, o atacante precisa gastar recursos financeiros com proxies caros e solvers de CAPTCHA, obtendo apenas uma fração do estoque.
+    * *Plataforma (2):* Bloqueia o ataque massivo e distribui a maior parte das unidades a consumidores legítimos, preservando sua reputação, embora arque com custos de infraestrutura e aumente a latência percebida do checkout.
+  * **$(A_2, B_1) \rightarrow (2, 3)$:** 
+    * *Scalper (2):* O operador tenta comprar como um consumidor comum e possui chance razoável e honesta de obter o produto pelo preço promocional com esforço mínimo.
+    * *Plataforma (3):* Cenário idílico de máxima utilidade. Custo computacional reduzido (sem servidores de fila ou WAF complexo), taxa de conversão altíssima e compradores autênticos satisfeitos.
+  * **$(A_2, B_2) \rightarrow (0, 1)$:** 
+    * *Scalper (0):* O comprador manual sofre com longas salas de espera, atrito de desafios e alta concorrência, tendo baixa chance de sucesso.
+    * *Plataforma (1):* Mantém uma infraestrutura de segurança cara e pesada que gera atrito desnecessário para uma base de clientes que nem sequer estava utilizando ferramentas automatizadas.
+
 * **Quais são as melhores respostas dos jogadores:**
-  * *Melhores respostas do Jogador A:*
-  * *Melhores respostas do Jogador B:*
+  * **Melhores respostas do Jogador A (Scalper):**
+    * Se a Plataforma escolhe $B_1$ (Checkout Direto), o Scalper compara $A_1$ (payoff 3) com $A_2$ (payoff 2). A melhor resposta é **$A_1$** ($3 > 2$).
+    * Se a Plataforma escolhe $B_2$ (Fila Justa), o Scalper compara $A_1$ (payoff 1) com $A_2$ (payoff 0). A melhor resposta é **$A_1$** ($1 > 0$).
+  * **Melhores respostas do Jogador B (Plataforma):**
+    * Se o Scalper escolhe $A_1$ (Flood de Bots), a Plataforma compara $B_1$ (payoff 0) com $B_2$ (payoff 2). A melhor resposta é **$B_2$** ($2 > 0$).
+    * Se o Scalper escolhe $A_2$ (Compra Manual), a Plataforma compara $B_1$ (payoff 3) com $B_2$ (payoff 1). A melhor resposta é **$B_1$** ($3 > 1$).
+
 * **Existe estratégia dominante?**
+  **Sim.** Para o Jogador A (Scalper), a ação **$A_1$ (Flood de Bots Concorrentes)** é uma **estratégia estritamente dominante**. Independentemente de a plataforma adotar checkout direto sem defesas ($B_1$) ou uma fila com desafios de segurança ($B_2$), o atacante obtém um payoff estritamente maior utilizando automação do que submetendo manualmente ($3 > 2$ e $1 > 0$). O scalper racional sempre escolherá automatizar.
+
 * **Existe um resultado no qual nenhum jogador melhora mudando sozinho (Equilíbrio de Nash)?**
+  **Sim.** O par de estratégias **$(A_1, B_2)$**, correspondente ao desfecho com payoffs **$(1, 2)$**, é o **único Equilíbrio de Nash em estratégias puras** deste jogo.  
+  * *Verificação de estabilidade:* Dado que o Scalper joga $A_1$, a Plataforma não tem incentivo para desviar unilateralmente para $B_1$ (seu payoff cairia de 2 para 0). Dado que a Plataforma joga $B_2$, o Scalper não tem incentivo para desviar unilateralmente para $A_2$ (seu payoff cairia de 1 para 0). Nenhum jogador melhora sua recompensa mudando de estratégia isoladamente.
+
 * **Esse resultado é bom para o sistema e para os usuários legítimos?**
+  **Não. Trata-se de um equilíbrio ineficiente segundo o critério de Pareto**, análogo à armadilha do *Dilema do Prisioneiro*:
+  * O ótimo social cooperativo ocorreria em $(A_2, B_1)$, onde a soma total de utilidade dos participantes seria $5$ ($2 + 3$). Nesse ponto idílico, todos compram manualmente sem custos de defesa ou ataques.
+  * No entanto, como a tentação de trapacear é estritamente dominante para o scalper, o sistema é arrastado para o equilíbrio estável de segurança em $(A_1, B_2)$, onde a soma de payoffs cai para $3$ ($1 + 2$).
+  * Para a plataforma, isso impõe custos perenes de infraestrutura de mitigação e licenciamento de softwares anti-bot. Para os **usuários legítimos**, esse equilíbrio acarreta efeitos colaterais indesejados: salas de espera obrigatórias, maior tempo de checkout, necessidade de resolução de CAPTCHAs invasivos e a frustração de perder compras mesmo cumprindo todas as regras de boa-fé.
 
 ---
 
 ### 3.3 Modelo Estratégico Dinâmico
 
-#### Ciclo de Rodadas Adversariais
+> 👤 **Responsável pelo desenvolvimento:** Artur Wahlbrink Kraemer  
+> 📝 *Rascunho base disponível para revisão e commit em [fontes/rascunho_completo_para_integrantes.md](fontes/rascunho_completo_para_integrantes.md)*
 
-| Rodada | Ação do participante | Resposta do sistema ou defensor | O que se torna observável? | Adaptação para a rodada seguinte |
-|:---:|---|---|---|---|
-| **1** | | | | |
-| **2** | | | | |
-| **3** | | | | |
-
-#### Diagrama do Ciclo Adaptativo
-
-![Diagrama do Ciclo Adaptativo](diagramas/ciclo-adaptativo.png)
-
-#### Perguntas de Análise Dinâmica
-
-* **Quem observa quem?**
-* **O que cada lado consegue mudar?**
-* **O que dispara uma adaptação?**
-* **Qual é o custo da adaptação para cada lado?**
-* **Em que ponto pode surgir uma corrida armamentista?**
+### Instruções para a Seção:
+* Representar pelo menos **três rodadas consecutivas** no ciclo: *Ação $\rightarrow$ Resposta $\rightarrow$ Observação $\rightarrow$ Adaptação*:
+  * **Rodada 1:** Força bruta de requisições via VPS $\rightarrow$ Rate Limiting por IP (HTTP 429) $\rightarrow$ Adaptação para proxies residenciais rotativos;
+  * **Rodada 2:** Pulverização de IPs $\rightarrow$ Fila Virtual com Token Criptográfico (PoW/CAPTCHA) $\rightarrow$ Adaptação para navegadores headless e solvers de IA;
+  * **Rodada 3:** Guerra de latência $\rightarrow$ Quebra do FIFO com Sorteio Ponderado por Reputação e 2FA $\rightarrow$ Adaptação para fazendas de identidades reais e SMS (inviabilidade econômica).
+* Incluir o **Diagrama do Ciclo Adaptativo** (`diagramas/ciclo-adaptativo.png` e código editável `diagramas/ciclo-adaptativo.puml`).
+* Responder às 5 perguntas de dinâmica adversarial:
+  1. *Quem observa quem?*
+  2. *O que cada lado consegue mudar?*
+  3. *O que dispara uma adaptação?*
+  4. *Qual é o custo da adaptação para cada lado?*
+  5. *Em que ponto pode surgir uma corrida armamentista?*
 
 ---
 
 ### 3.4 Ameaças e Riscos
 
-#### Diagrama de Superfície de Ataque
+> 👤 **Responsável pelo desenvolvimento:** Gabriel Camargo Ortiz  
+> 📝 *Rascunho base disponível para revisão e commit em [fontes/rascunho_completo_para_integrantes.md](fontes/rascunho_completo_para_integrantes.md)*
 
-![Diagrama de Superfície de Ataque](diagramas/superficie-de-ataque.png)
-
-#### Pontos de Exploração Identificados
-1. *Ponto de Exploração 1:*
-2. *Ponto de Exploração 2:*
-3. *Ponto de Exploração 3:*
-
-#### Cenários de Ameaça
-
-> **Formato padrão:**  
-> *Um [ator] pode realizar [ação] por meio de [ponto de exploração], aproveitando [fraqueza ou pressuposto], causando [impacto] sobre [ativo ou propriedade].*
-
-* **A1:** Um `[ator]` pode realizar `[ação]` por meio de `[ponto de exploração]`, aproveitando `[fraqueza ou pressuposto]`, causando `[impacto]` sobre `[ativo ou propriedade]`.
-* **A2:** Um `[ator]` pode realizar `[ação]` por meio de `[ponto de exploração]`, aproveitando `[fraqueza ou pressuposto]`, causando `[impacto]` sobre `[ativo ou propriedade]`.
-* **A3:** Um `[ator]` pode realizar `[ação]` por meio de `[ponto de exploração]`, aproveitando `[fraqueza ou pressuposto]`, causando `[impacto]` sobre `[ativo ou propriedade]`.
-
-#### Avaliação de Riscos
-
-> **Escala (1 a 3):**  
-> * Probabilidade: 1 = baixa, 2 = média, 3 = alta  
-> * Impacto: 1 = baixo, 2 = médio, 3 = alto  
-> * Risco: $\text{Probabilidade} \times \text{Impacto}$
-
-| ID | Cenário de ameaça | Ponto de exploração | Pressuposto ou fraqueza | Ativo afetado | Probabilidade (1-3) | Impacto (1-3) | Risco (1-9) |
-|:---:|---|---|---|---|:---:|:---:|:---:|
-| **A1** | | | | | | | |
-| **A2** | | | | | | | |
-| **A3** | | | | | | | |
-
-#### Detalhamento da Ameaça de Maior Prioridade
-
-* **Ameaça selecionada:**
-* **Como o sistema poderia responder:**
-* **Que informação essa resposta revelaria:**
-* **Como o adversário poderia se adaptar na rodada seguinte:**
-* **Quais efeitos colaterais poderiam atingir usuários legítimos:**
-* **Qual risco continuaria existindo após a resposta (risco residual):**
-* **O que o sistema precisa continuar preservando apesar das adaptações:**
+### Instruções para a Seção:
+* Incluir o **Diagrama de Superfície de Ataque** (`diagramas/superficie-de-ataque.png` e código editável `diagramas/superficie-de-ataque.puml`).
+* Identificar e detalhar **3 Pontos de Exploração** (Endpoint de Checkout, Serviço de Cadastro e Reserva Temporária de Estoque).
+* Formular **3 Cenários de Ameaça** utilizando rigorosamente o template do enunciado:
+  * *Um [ator] pode realizar [ação] por meio de [ponto de exploração], aproveitando [fraqueza ou pressuposto], causando [impacto] sobre [ativo ou propriedade].*
+* Construir a **Tabela de Avaliação de Riscos** ($P \times I = R$) com escala de 1 a 3.
+* Detalhar exaustivamente a **Ameaça Prioritária (A1 — Risco 9)** respondendo:
+  * Como o sistema responde;
+  * Que informação a resposta revela;
+  * Como o adversário se adapta;
+  * Efeitos colaterais em usuários legítimos (fricção, latência e ansiedade);
+  * Risco residual;
+  * O que o sistema precisa continuar preservando.
 
 ---
 
-## 4. Continuidade com o Trabalho 2
+## 4. Continuidade com o Trabalho 2: Planejamento Arquitetural
 
-*[Descrever as decisões arquiteturais e o planejamento para transformar a especificação deste Trabalho 1 em uma implementação funcional de código no Trabalho 2.]*
+> 👤 **Responsável pelo desenvolvimento:** Fade Hassan Husein Kanaan  
+> ✅ **Status:** Concluído e Especificado
+
+Este Trabalho 1 funciona como a especificação de requisitos e desenho conceitual para a **implementação funcional que será desenvolvida no Trabalho 2**.
+
+```mermaid
+flowchart TD
+    subgraph ClientLayer["Camada de Agentes Clientes (Simulador)"]
+        H["Agentes Humanos (asyncio)<br/>• Delay biológico (2-4s)<br/>• 1 conta / 1 requisição"]
+        B["Agentes Scalper Bots (aiohttp)<br/>• Disparos concorrentes maciços<br/>• Rotação simulada de IPs e contas"]
+    end
+
+    subgraph DefensePipeline["Pipeline Modular de Defesa (FastAPI Middleware)"]
+        D0["Modo 0: Baseline FIFO (Sem Proteção)"]
+        D1["Modo 1: Rate Limiter por IP (Token Bucket)"]
+        D2["Modo 2: Fila Virtual com Token Criptográfico (PoW)"]
+        D3["Modo 3: Sorteio Ponderado por Reputação e 2FA"]
+    end
+
+    subgraph CoreEngine["Núcleo da Aplicação"]
+        API["API Gateway / Roteador FastAPI<br/>POST /api/v1/checkout/orders"]
+        Stock["Motor de Concorrência de Estoque<br/>(Estoque Atômico: 500 un. via asyncio.Lock)"]
+        Metrics["Coletor de Telemetria e Métricas<br/>(% Alocado para Humanos vs. Bots)"]
+    end
+
+    H --> API
+    B --> API
+    API --> DefensePipeline
+    DefensePipeline --> Stock
+    Stock --> Metrics
+```
+
+### Decisões Arquiteturais Concretas para a Implementação no Trabalho 2:
+1. **Linguagem e Stack Tecnológica:**
+   * Backend em **Python 3.11+ utilizando FastAPI e Uvicorn**, aproveitando o ecossistema assíncrono nativo (`asyncio`) para gerenciar centenas de conexões simultâneas com baixo consumo de memória.
+2. **Componente de Controle de Concorrência de Estoque (`InventoryEngine`):**
+   * O estoque promocional (500 unidades) será gerenciado em memória através de operações atômicas protegidas por um primitivo `asyncio.Lock` (ou estrutura simulada em Redis), prevenindo condições de corrida (*race conditions* e *overselling*).
+3. **Pipeline Modular de Defesas Comutáveis (`DefensePipeline`):**
+   * A aplicação contará com um mecanismo de alternância de estratégias de mitigação via variáveis de ambiente ou flags de configuração, permitindo demonstrar empiricamente a transição entre as rodadas:
+     * `DEFENSE_MODE=0`: Baseline sem defesas (FIFO estrito — demonstrando a vitória absoluta dos bots na Rodada 1);
+     * `DEFENSE_MODE=1`: Rate Limiting estático por IP via algoritmo de *Token Bucket*;
+     * `DEFENSE_MODE=2`: Sala de espera com emissão de token assinado (`HMAC`) após desafio computacional;
+     * `DEFENSE_MODE=3`: Sorteio ponderado com limite de 1 item por CPF e simulação de 2FA.
+4. **Simulador de Atores Adversariais (`simulator.py`):**
+   * Um script concorrente construído com `aiohttp` que executará simultaneamente dois grupos de agentes:
+     * *Grupo de Usuários Humanos (50 instâncias):* Apresenta atrasos de navegação estocásticos de 2 a 5 segundos e envia dados cadastrais únicos.
+     * *Grupo de Scalper Bots (500 instâncias assíncronas):* Dispara requisições com intervalo de milissegundos, simula rotação de IPs e tenta explorar atalhos no fluxo de compra.
+5. **Dashboard e Métricas de Eficácia:**
+   * A aplicação exibirá ao final de cada execução: o tempo total até o esgotamento do estoque, o número de requisições bloqueadas por cada camada de segurança, a latência média de atendimento e, crucialmente, o **índice de justiça distributiva** (percentual de itens alocados para clientes legítimos vs. monopolizados por bots).
 
 ---
 
 ## 5. Referências e Fontes Consultadas
 
-*[Listar as principais referências bibliográficas e documentações técnicas utilizadas. O detalhamento completo pode ser mantido em [fontes/referencias.md](fontes/referencias.md).]*
+Todas as fontes teóricas, padrões de segurança em software e estudos de caso da indústria que embasam este relatório estão detalhados em [fontes/referencias.md](fontes/referencias.md).
+
+### Principais Obras e Normas:
+1. **QUINCOZES, Silvio Ereno.** *Aulas, Notas de Estudo e Videoaulas da Disciplina de Engenharia de Software Seguro e Engenharia de Software Adversarial*. Universidade Federal do Pampa (UNIPAMPA), Campus Alegrete. Programa de Pós-Graduação em Engenharia de Software (PPGES) e Bacharelado em Engenharia de Software. (Conceituação de sistemas adversariais, paradoxo da suposição cooperativa, dinâmica de rodadas e modelagem de incentivos).
+2. **NASH, John.** *Equilibrium Points in N-Person Games*. Proceedings of the National Academy of Sciences, v. 36, n. 1, p. 48-49, 1950. (Fundamentação do Equilíbrio de Nash).
+3. **GIBBONS, Robert.** *Game Theory for Applied Economists*. Princeton University Press, 1992. (Metodologia de payoffs e análise de estratégias dominantes).
+4. **OWASP.** *OWASP Automated Threats to Web Applications*. Padrão OAT-005 (*Scalping*), OAT-009 (*Denial of Inventory*) e OAT-019 (*Account Creation*), 2020.
+5. **ANDERSON, Ross.** *Security Engineering: A Guide to Building Dependable Distributed Systems*. 3. ed. Wiley, 2020. (Economia da segurança da informação e incentivos assimétricos).
+6. **CLOUDFLARE.** *Stopping Scalpers: Architectural Approaches to Defend Limited Inventory Drops*. Technical Report, 2023.
+7. **QUEUE-IT.** *The Anatomy of Fair Queue Systems for High-Demand E-Commerce Drops*. Technical Whitepaper, 2022.
 
 ---
 
 ## 6. Declaração sobre Uso de IA Generativa
 
-*[Declarar para quais tarefas a IA generativa foi utilizada e descrever como o grupo verificou e validou o conteúdo produzido, conforme exigido na Seção 6 do enunciado.]*
+> 👤 **Responsável pelo desenvolvimento:** Gabriel Camargo Ortiz  
+> 📝 *Rascunho base disponível para revisão e commit em [fontes/rascunho_completo_para_integrantes.md](fontes/rascunho_completo_para_integrantes.md)*
+
+### Instruções para a Seção:
+* Declarar formalmente o uso de IA generativa (Google Gemini / Antigravity Assistant), indicando:
+  1. *Tarefas:* Auxílio na formatação do Markdown, sugestão de roteiros e suporte aos scripts de geração de diagramas;
+  2. *Metodologia de Verificação:* Validação matemática manual dos payoffs de Nash, conferência técnica contra padrões OWASP OAT e domínio do conteúdo pelo grupo para sustentação em vídeo.
 
 ---
 
 ## 7. Contribuições Individuais dos Integrantes
 
-*[Descrever a divisão de trabalho e a contribuição de cada membro no repositório e na apresentação.]*
+Para garantir total conformidade com o **Critério 5 da Rubrica de Avaliação** (balanço de contribuições individuais comprovadas por commits no Git e divisão equitativa de falas na apresentação em vídeo):
 
-| Integrante | Papel / Responsabilidades | Seções Desenvolvidas |
-|---|---|---|
-| | | |
-| | | |
-| | | |
-| | | |
-| | | |
-| | | |
+| Integrante | Responsabilidades Principais no Projeto | Seções Desenvolvidas no Relatório | Artefatos e Diagramas Responsáveis | Participação na Apresentação em Vídeo |
+| :--- | :--- | :--- | :--- | :--- |
+| **Rodrigo Thoma da Silva** | Definição da proposta, caracterização do sistema de Flash Sale, ativos críticos e pressupostos. | **Seção 1, Seção 2 e Seção 3.1** | `contexto.png`, `contexto.puml` e `contexto.mmd` | **Bloco 1 (Abertura):** Motivação da Black Friday, delimitação da interação e apresentação do diagrama de contexto (2 a 3 min). |
+| **Fade Hassan Husein Kanaan** | Modelagem formal de Teoria dos Jogos (matriz 2x2), análise de dominância e desenho arquitetural para o T2. | **Seção 3.2 e Seção 4** | Matriz de Payoffs e Arquitetura de Componentes do T2 | **Bloco 2 (Modelo Estático & T2):** Explicação da matriz estática, prova de dominância do flood e visão arquitetural do T2 (2 a 3 min). |
+| **Artur Wahlbrink Kraemer** | Análise da evolução temporal em 3 rodadas, dinâmica de observabilidade e resposta à questão reflexiva final. | **Seção 3.3 e Seção 8** | `ciclo-adaptativo.png`, `ciclo-adaptativo.puml` e `ciclo-adaptativo.mmd` | **Bloco 3 (Modelo Dinâmico):** Evolução das 3 rodadas, vazamento de informação, corrida armamentista e reflexão final (2 a 3 min). |
+| **Gabriel Camargo Ortiz** | Identificação da superfície de ataque, cálculo da matriz de riscos PxI, mitigação prioritária e referências. | **Seção 3.4, 5, 6 e 7** | `superficie-de-ataque.png`, `superficie-de-ataque.puml` e `referencias.md` | **Bloco 4 (Ameaças & Conclusão):** Superfície de ataque, cenários de ameaça, efeitos colaterais na defesa de A1 e encerramento (2 a 3 min). |
 
 ---
 
 ## 8. Pergunta Final
 
+> 👤 **Responsável pelo desenvolvimento:** Artur Wahlbrink Kraemer  
+> 📝 *Rascunho base disponível para revisão e commit em [fontes/rascunho_completo_para_integrantes.md](fontes/rascunho_completo_para_integrantes.md)*
+
+### Pergunta a ser respondida:
 > **"Depois que o sistema responder, o que o outro lado aprenderá e tentará fazer em seguida?"**
 
-*[Inserir a resposta reflexiva do grupo à questão final do enunciado.]*
-
+* Analisar o que o scalper aprende com o sorteio ponderado e 2FA (que a velocidade de rede foi anulada).
+* Analisar a transição do atacante para engenharia social e economia de identidades físicas (*Human-in-the-Loop Sybil Farms*), ou abandono da plataforma por inviabilidade econômica.
