@@ -40,17 +40,16 @@
 
 ## 1. Proposta
 
-> [!IMPORTANT]
 > **Questão central:** *O que torna esse sistema adversarial, como os participantes tomam decisões e como a interação evolui ao longo das rodadas?*
 
-Este trabalho analisa a disputa em torno do **checkout concorrente em promoções relâmpago (*Flash Sales*) de Black Friday**, onde um lote limitado de 500 unidades de um produto de alta demanda é disponibilizado com grande desconto.
+Este trabalho analisa a disputa em torno do checkout concorrente em promoções relâmpago (*Flash Sales*) de Black Friday, onde um lote limitado de 500 unidades de um produto de alta demanda é disponibilizado com grande desconto.
 
 ### ⚔️ Por que o sistema é adversarial?
 
 Existe um conflito direto de incentivos entre quem compra e quem vende:
 
 * **Operadores de Scalper Bots (Cambistas Digitais):** Querem monopolizar o estoque no instante exato da abertura das vendas usando automação. O objetivo é revender esses produtos no mercado paralelo com lucro alto (ágio de 200% a 400%), aproveitando que scripts automatizados conseguem enviar pedidos em milissegundos, superando com facilidade a velocidade humana.
-* **A Plataforma de E-Commerce (Defensora):** Quer garantir **justiça distributiva** (1 unidade por CPF), entregando os produtos a 500 compradores reais diferentes. Essa distribuição é essencial para atrair novos clientes, fortalecer a marca e evitar acusações de propaganda enganosa ou fraude no evento.
+* **A Plataforma de E-Commerce (Defensora):** Quer garantir justiça distributiva (1 unidade por CPF), entregando os produtos a 500 compradores reais diferentes. Essa distribuição é essencial para atrair novos clientes, fortalecer a marca e evitar acusações de propaganda enganosa ou fraude no evento.
 
 Essa disputa não decorre de falhas ou instabilidades acidentais: o cambista gasta dinheiro com servidores, proxies e ferramentas automatizadas com a intenção explícita de furar as regras e esgotar o estoque antes dos clientes legítimos.
 
