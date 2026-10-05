@@ -40,14 +40,37 @@
 
 ## 1. Proposta
 
-> 👤 **Responsável pelo desenvolvimento:** Rodrigo Thoma da Silva  
-> 📝 *Rascunho base disponível para revisão e commit em [fontes/rascunho_completo_para_integrantes.md](fontes/rascunho_completo_para_integrantes.md)*
+> [!IMPORTANT]
+> **Questão central:** *O que torna esse sistema adversarial, como os participantes tomam decisões e como a interação evolui ao longo das rodadas?*
 
-### Instruções para a Seção:
-* Responder à questão central: *O que torna esse sistema adversarial, como os participantes tomam decisões e como a interação evolui ao longo das rodadas?*
-* Delimitar a interação: **Checkout concorrente de produtos com estoque escasso em Flash Sales de Black Friday** (`POST /api/v1/checkout/orders` para 500 unidades).
-* Detalhar o conflito direto entre **Operadores de Scalper Bots** (monopolização para revenda com ágio de 300%) e a **Plataforma de E-Commerce** (justiça distributiva de 1 un./CPF e resiliência de infraestrutura).
-* Explicar como os participantes tomam decisões econômicas (custo de proxies vs. lucro de revenda) e como a interação evolui em corrida armamentista.
+Este trabalho analisa a disputa em torno do **checkout concorrente em promoções relâmpago (*Flash Sales*) de Black Friday**, onde um lote limitado de 500 unidades de um produto de alta demanda é disponibilizado com grande desconto.
+
+### ⚔️ Por que o sistema é adversarial?
+
+Existe um conflito direto de incentivos entre quem compra e quem vende:
+
+* **Operadores de Scalper Bots (Cambistas Digitais):** Querem monopolizar o estoque no instante exato da abertura das vendas usando automação. O objetivo é revender esses produtos no mercado paralelo com lucro alto (ágio de 200% a 400%), aproveitando que scripts automatizados conseguem enviar pedidos em milissegundos, superando com facilidade a velocidade humana.
+* **A Plataforma de E-Commerce (Defensora):** Quer garantir **justiça distributiva** (1 unidade por CPF), entregando os produtos a 500 compradores reais diferentes. Essa distribuição é essencial para atrair novos clientes, fortalecer a marca e evitar acusações de propaganda enganosa ou fraude no evento.
+
+Essa disputa não decorre de falhas ou instabilidades acidentais: o cambista gasta dinheiro com servidores, proxies e ferramentas automatizadas com a intenção explícita de furar as regras e esgotar o estoque antes dos clientes legítimos.
+
+### ⚖️ Como os participantes tomam decisões?
+
+Os dois lados agem de forma calculada, avaliando custos e ganhos:
+
+* **O cambista (atacante):** Avalia quanto vai gastar em infraestrutura (proxies residenciais, serviços que quebram CAPTCHA e contas falsas) contra o lucro líquido que terá revendendo os produtos. Se o custo de burlar o sistema for menor que o lucro esperado, o ataque compensa.
+* **A plataforma (defensora):** Decide quais barreiras de proteção ativar (*Rate Limiting*, filas virtuais, desafios criptográficos e sorteios). O desafio aqui é barrar os bots sem deixar a compra lenta ou frustrante para os clientes de verdade, evitando falsos positivos.
+
+### 🔄 Como a interação evolui ao longo das rodadas?
+
+A disputa evolui em um ciclo contínuo de ataque, defesa e adaptação:
+
+1. **Ataque em massa:** O cambista dispara milhares de requisições por segundo a partir de servidores em nuvem para comprar tudo no primeiro instante.
+2. **Defesa inicial:** A plataforma detecta o pico repentino de tráfego e bloqueia os IPs dos servidores com erro `HTTP 429 (Too Many Requests)`.
+3. **Adaptação do atacante:** O cambista percebe o bloqueio por IP e espalha suas requisições por milhares de proxies residenciais, fazendo cada requisição parecer vir de uma conexão doméstica diferente.
+4. **Escalação da defesa:** Como filtrar IP já não funciona, a plataforma adota salas de espera virtuais, desafios de integridade e sorteios de vagas. Isso força o cambista a gastar cada vez mais com navegadores completos e contas laranjas, até que a fraude deixe de ser lucrativa.
+
+> 💡 **Continuidade com o Trabalho 2:** Esta análise serve como especificação direta para a implementação prática no Trabalho 2, onde construiremos uma API de checkout, um pipeline de defesas comutáveis e uma simulação com clientes reais competindo contra robôs.
 
 ---
 
