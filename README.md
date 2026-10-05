@@ -521,26 +521,39 @@ Durante o desenvolvimento deste trabalho, foram utilizadas ferramentas de IA
 generativa, incluindo **Claude** e **ChatGPT**, como apoio à produção e revisão
 dos artefatos.
 
-O uso dessas ferramentas ocorreu principalmente nas seguintes atividades:
+### 6.1 Tarefas em que a IA Generativa foi Utilizada
+
+As ferramentas foram utilizadas principalmente nas seguintes atividades:
 
 - auxílio na organização e formatação do conteúdo em Markdown;
 - sugestão e refinamento de roteiros para a apresentação;
 - apoio na estruturação de textos e descrições técnicas;
 - suporte à elaboração e revisão dos scripts utilizados na geração dos diagramas.
 
-As respostas e sugestões produzidas por IA não foram adotadas automaticamente.
-O grupo realizou verificação manual do conteúdo antes de incorporá-lo ao
-trabalho.
+### 6.2 Metodologia de Verificação e Validação
 
-A metodologia de verificação incluiu:
+O conteúdo produzido com auxílio de IA foi revisado pelo grupo antes de ser
+incorporado aos artefatos do trabalho.
 
-- conferência manual da matriz de payoffs e da identificação do Equilíbrio de Nash;
-- comparação dos cenários de ameaça com os conceitos e padrões OWASP OAT
-  utilizados como referência;
-- revisão da coerência entre os modelos estático, dinâmico e de ameaças;
-- validação dos diagramas em relação ao texto do relatório;
-- revisão do conteúdo pelos integrantes para garantir domínio suficiente para
-  explicá-lo durante a apresentação em vídeo.
+A verificação incluiu:
+
+- **Validação dos payoffs:** conferência manual dos valores da matriz de decisão,
+  das melhores respostas, da estratégia dominante e do Equilíbrio de Nash;
+
+- **Revisão do modelo dinâmico:** verificação da coerência entre ação, resposta,
+  observação e adaptação ao longo das rodadas adversariais;
+
+- **Revisão dos cenários de ameaça:** comparação dos cenários descritos com os
+  conceitos utilizados no trabalho e com as referências OWASP OAT adotadas
+  pelo grupo;
+
+- **Consistência entre artefatos:** conferência dos diagramas, tabelas de riscos,
+  modelos estratégico estático e dinâmico e texto do relatório para evitar
+  contradições;
+
+- **Domínio do conteúdo:** revisão das decisões e justificativas pelos integrantes
+  do grupo para que todos consigam explicar o conteúdo apresentado no relatório
+  e no vídeo.
 
 A IA foi utilizada, portanto, como ferramenta de apoio à escrita, organização e
 revisão, permanecendo com os integrantes do grupo a responsabilidade pela
