@@ -277,7 +277,7 @@ adicionais de validação, o pressuposto de identidade única deixa de ser váli
 Esse comportamento caracteriza uma estratégia do tipo Sybil, na qual várias
 identidades são controladas pelo mesmo participante.
 
-##### P3 — Reserva Temporária de Estoque
+##### P3 — Reserva de Carrinho
 
 O endpoint `PUT /api/v1/cart/reserve` permite reservar temporariamente uma
 unidade durante o processo de compra.
@@ -301,8 +301,8 @@ de ameaça seguindo o formato estabelecido no enunciado.
 Um **operador de scalper bots** pode realizar **um grande número de tentativas
 concorrentes de compra** por meio do **endpoint de checkout**, aproveitando
 **a política FIFO e a vantagem de velocidade da automação em relação aos
-usuários humanos**, causando **monopolização do estoque e sobrecarga do
-serviço** sobre a **justiça distributiva e a disponibilidade da plataforma**.
+usuários humanos**, causando **monopolização do estoque e possível sobrecarga do serviço**
+sobre a **justiça distributiva**, além de afetar a disponibilidade da API.
 
 ##### A2 — Criação de Múltiplas Identidades
 
@@ -317,8 +317,129 @@ causando **evasão do limite de uma unidade por pessoa** sobre a
 Um **operador de scalper bots** pode realizar **reservas repetidas sem
 finalização da compra** por meio do **mecanismo de reserva temporária de
 estoque**, aproveitando **um tempo de retenção elevado e a ausência de custo
-para abandonar reservas**, causando **indisponibilidade temporária de unidades**
-sobre a **disponibilidade do estoque e a confiança dos consumidores**.
+para abandonar reservas**, causando **indisponibilidade temporária de unidades
+e frustração dos consumidores**, com impacto sobre a **confiança do cliente**.
+
+---
+
+#### 3.4.3 Avaliação dos Riscos
+
+Os cenários de ameaça foram avaliados utilizando a escala definida no enunciado:
+
+- **Probabilidade:** 1 = baixa, 2 = média, 3 = alta;
+- **Impacto:** 1 = baixo, 2 = médio, 3 = alto;
+- **Risco:** probabilidade × impacto.
+
+| ID | Cenário de ameaça | Ponto de exploração | Pressuposto ou fraqueza | Ativo afetado | Probabilidade | Impacto | Risco |
+|---|---|---|---|---|---:|---:|---:|
+| A1 | Flood automatizado de requisições de compra | Endpoint de Checkout | Política FIFO e vantagem de velocidade da automação | Justiça distributiva | 3 | 3 | **9** |
+| A2 | Criação de múltiplas identidades | Serviço de Contas | Pressuposto de que cada conta representa uma pessoa distinta | Justiça distributiva | 3 | 2 | **6** |
+| A3 | Retenção artificial de unidades | Reserva de Carrinho | Tempo de retenção elevado e ausência de custo para abandonar reservas | Confiança do cliente | 2 | 2 | **4** |
+
+A ameaça **A1 — Flood Automatizado no Checkout** foi classificada como a
+ameaça de maior prioridade, com risco **9**.
+
+Sua probabilidade é considerada alta porque a automação de requisições é uma
+estratégia diretamente compatível com o objetivo do operador de scalper bots e
+pode ser executada em grande escala.
+
+O impacto também é alto porque a exploração pode afetar simultaneamente a
+distribuição justa das unidades promocionais e a disponibilidade do serviço,
+prejudicando consumidores legítimos e a própria operação da plataforma.
+
+---
+
+#### 3.4.4 Resposta à Ameaça Prioritária
+
+A ameaça **A1 — Flood Automatizado no Checkout** foi selecionada para análise
+detalhada por apresentar o maior nível de risco identificado.
+
+##### Resposta do Sistema
+
+A plataforma pode responder substituindo o processamento baseado exclusivamente
+em FIFO por mecanismos que reduzam a vantagem obtida pela velocidade das
+requisições.
+
+Entre as possíveis medidas estão o uso de rate limiting, fila virtual com
+tokens assinados, desafios de integridade e mecanismos de ordenação que não
+dependam somente do instante de chegada da requisição.
+
+Esses controles aumentam o custo da automação em larga escala e reduzem a
+capacidade de um único participante monopolizar o estoque.
+
+##### Informação Revelada pela Resposta
+
+A defesa adotada também produz informações observáveis pelo adversário.
+
+Respostas como `HTTP 429 Too Many Requests`, aumento do tempo de espera,
+inclusão de desafios adicionais ou mudanças no comportamento da fila permitem
+ao operador perceber quais padrões de acesso estão sendo limitados.
+
+Dessa forma, a resposta do sistema não apenas bloqueia determinadas ações,
+mas também fornece sinais sobre a estratégia de defesa utilizada.
+
+##### Adaptação do Adversário
+
+Após perceber que requisições concentradas estão sendo limitadas, o operador
+pode adaptar sua estratégia utilizando diferentes endereços de origem, reduzindo
+a frequência de cada agente ou distribuindo as tentativas entre várias
+identidades.
+
+Caso a plataforma utilize filas virtuais e desafios de integridade, o adversário
+também pode tentar aproximar o comportamento dos bots ao comportamento de
+usuários legítimos.
+
+O objetivo do atacante permanece o mesmo, mas as ações utilizadas para alcançá-lo
+mudam conforme as respostas observadas.
+
+##### Efeitos Colaterais sobre Usuários Legítimos
+
+Os mecanismos de defesa também podem aumentar o custo de interação para
+consumidores legítimos.
+
+Entre os possíveis efeitos colaterais estão:
+
+- aumento da latência durante o checkout;
+- necessidade de aguardar em uma fila virtual;
+- exigência de desafios adicionais;
+- possibilidade de falsos positivos;
+- maior tempo para concluir a compra;
+- frustração de consumidores legítimos durante períodos de alta demanda.
+
+Assim, uma defesa mais restritiva pode melhorar a resistência contra bots, mas
+também prejudicar a experiência de usuários que seguem as regras do sistema.
+
+##### Risco Residual
+
+Mesmo após a adoção dos mecanismos de defesa, o risco não é completamente
+eliminado.
+
+O adversário pode distribuir suas requisições entre múltiplos endereços,
+utilizar diferentes contas ou alterar a frequência das ações para reduzir a
+probabilidade de detecção.
+
+Além disso, quanto mais o comportamento automatizado se aproxima do comportamento
+de um usuário legítimo, maior se torna a dificuldade de distinguir os dois sem
+aumentar também a ocorrência de falsos positivos.
+
+Portanto, a resposta defensiva reduz a vantagem inicial dos scalper bots, mas
+mantém um risco residual decorrente da capacidade de adaptação do participante
+adversarial.
+
+##### Propriedades que Devem Continuar Preservadas
+
+Mesmo com a evolução das estratégias de ataque e defesa, a plataforma deve
+continuar preservando três propriedades principais:
+
+1. **Justiça distributiva:** evitar que poucos participantes obtenham uma parcela
+   desproporcional do estoque utilizando vantagens técnicas.
+2. **Disponibilidade:** manter o serviço acessível durante períodos de grande
+   volume de requisições.
+3. **Confiança:** evitar que os mecanismos de proteção tornem o processo de
+   compra excessivamente oneroso para consumidores legítimos.
+
+A defesa deve, portanto, aumentar o custo da estratégia adversarial sem tornar
+o processo de compra inviável para os participantes legítimos.
 
 ---
 
