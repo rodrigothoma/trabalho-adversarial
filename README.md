@@ -516,12 +516,35 @@ Todas as fontes teóricas, padrões de segurança em software e estudos de caso 
 ## 6. Declaração sobre Uso de IA Generativa
 
 > 👤 **Responsável pelo desenvolvimento:** Gabriel Camargo Ortiz  
-> 📝 *Rascunho base disponível para revisão e commit em [fontes/rascunho_completo_para_integrantes.md](fontes/rascunho_completo_para_integrantes.md)*
 
-### Instruções para a Seção:
-* Declarar formalmente o uso de IA generativa (Google Gemini / Antigravity Assistant), indicando:
-  1. *Tarefas:* Auxílio na formatação do Markdown, sugestão de roteiros e suporte aos scripts de geração de diagramas;
-  2. *Metodologia de Verificação:* Validação matemática manual dos payoffs de Nash, conferência técnica contra padrões OWASP OAT e domínio do conteúdo pelo grupo para sustentação em vídeo.
+Durante o desenvolvimento deste trabalho, foram utilizadas ferramentas de IA
+generativa, incluindo **Claude** e **ChatGPT**, como apoio à produção e revisão
+dos artefatos.
+
+O uso dessas ferramentas ocorreu principalmente nas seguintes atividades:
+
+- auxílio na organização e formatação do conteúdo em Markdown;
+- sugestão e refinamento de roteiros para a apresentação;
+- apoio na estruturação de textos e descrições técnicas;
+- suporte à elaboração e revisão dos scripts utilizados na geração dos diagramas.
+
+As respostas e sugestões produzidas por IA não foram adotadas automaticamente.
+O grupo realizou verificação manual do conteúdo antes de incorporá-lo ao
+trabalho.
+
+A metodologia de verificação incluiu:
+
+- conferência manual da matriz de payoffs e da identificação do Equilíbrio de Nash;
+- comparação dos cenários de ameaça com os conceitos e padrões OWASP OAT
+  utilizados como referência;
+- revisão da coerência entre os modelos estático, dinâmico e de ameaças;
+- validação dos diagramas em relação ao texto do relatório;
+- revisão do conteúdo pelos integrantes para garantir domínio suficiente para
+  explicá-lo durante a apresentação em vídeo.
+
+A IA foi utilizada, portanto, como ferramenta de apoio à escrita, organização e
+revisão, permanecendo com os integrantes do grupo a responsabilidade pela
+validação técnica e pelas decisões apresentadas no trabalho.
 
 ---
 
