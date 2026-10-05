@@ -76,17 +76,23 @@ A disputa evolui em um ciclo contínuo de ataque, defesa e adaptação:
 
 ## 2. Escolha do Sistema
 
-> 👤 **Responsável pelo desenvolvimento:** Rodrigo Thoma da Silva  
-> 📝 *Rascunho base disponível para revisão e commit em [fontes/rascunho_completo_para_integrantes.md](fontes/rascunho_completo_para_integrantes.md)*
+### 📋 Ficha Técnica da Interação
 
-### Instruções para a Seção:
-* Preencher a **Ficha Técnica da Interação** (Sistema Escolhido, Interação Específica e Contexto de Operação).
-* Preencher a tabela de **Conformidade com os 5 Critérios Obrigatórios do Enunciado**:
-  1. Pelo menos dois participantes capazes de tomar decisões;
-  2. Objetivos total ou parcialmente conflitantes;
-  3. Regra, métrica ou decisão explorável (latência de rede e política FIFO estrita);
-  4. Resposta observável que permita reação ou adaptação (códigos HTTP, latência, tokens);
-  5. Escopo viável para implementação no Trabalho 2.
+| Atributo | Definição no Projeto |
+| :--- | :--- |
+| **Sistema Escolhido** | Plataforma de E-Commerce com mecânica de *Flash Sale* (promoção relâmpago de estoque escasso). |
+| **Interação Específica** | Envio e validação da requisição de compra (`POST /api/v1/checkout/orders`) para adquirir um produto promocional limitado a 500 unidades no exato momento da abertura das vendas. |
+| **Contexto de Operação** | Evento de pico promocional (Black Friday) com estoque finito, abertura simultânea para todos os clientes e grande incentivo para revenda no mercado paralelo. |
+
+### 🎯 Conformidade com os Critérios Obrigatórios do Enunciado
+
+| # | Critério Obrigatório | Atendimento no Sistema Analisado |
+| :-: | :--- | :--- |
+| **1** | **Pelo menos dois participantes capazes de tomar decisões** | • **Operador de Scalper Bots:** Decide a taxa de disparos, a rede de proxies utilizada, o tipo de automação (requisições diretas via script vs. navegadores *headless*) e o uso de contas laranjas.<br>• **Mecanismo de Checkout e Fila da Plataforma:** Decide como processar as requisições recebidas, se retém usuários em fila virtual, se exige desafios de segurança (CAPTCHA/PoW) e se distribui o estoque por ordem de chegada ou sorteio. |
+| **2** | **Objetivos total ou parcialmente conflitantes** | • **Scalper:** Quer concentrar e monopolizar o maior número de unidades para revender com ágio.<br>• **Plataforma:** Quer pulverizar o estoque (limite de 1 item por CPF) entre clientes reais para gerar fidelização e evitar danos à reputação da marca. |
+| **3** | **Regra, métrica ou decisão explorável** | A regra clássica de **ordem de chegada por velocidade de rede (FIFO estrito)**. O atacante se aproveita dessa regra disparando scripts automatizados de dentro de servidores em nuvem, completando a compra em poucos milissegundos — algo humanamente impossível para quem usa navegadores comuns. |
+| **4** | **Resposta observável que permita reação ou adaptação** | O atacante observa as respostas imediatas da API: códigos de erro HTTP (200, 403, 429, 503), cabeçalhos de limitação (`Retry-After`), latência da conexão, redirecionamentos para telas de fila e a contagem pública de estoque restante. Com esses dados, ele recalibra sua estratégia de ataque. |
+| **5** | **Escopo viável para implementação no Trabalho 2** | O escopo é conciso e modular: um endpoint de checkout (`/checkout`), controle de concorrência de estoque em memória (`asyncio.Lock`), camadas comutáveis de proteção (Rate Limiting, Fila Virtual e Sorteio) e um script de teste simulando clientes humanos competindo contra robôs. |
 
 ---
 
