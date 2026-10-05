@@ -100,15 +100,52 @@ A disputa evolui em um ciclo contínuo de ataque, defesa e adaptação:
 
 ### 3.1 Descrição do Sistema Adversarial
 
-> 👤 **Responsável pelo desenvolvimento:** Rodrigo Thoma da Silva  
-> 📝 *Rascunho base disponível para revisão e commit em [fontes/rascunho_completo_para_integrantes.md](fontes/rascunho_completo_para_integrantes.md)*
+* **Qual é o sistema e qual interação será analisada:**  
+  Plataforma de E-Commerce durante uma promoção relâmpago (*Flash Sale*). A interação analisada é a **submissão e o processamento da ordem de compra** no endpoint `POST /api/v1/checkout/orders`, onde centenas de clientes e robôs disputam 500 unidades promocionais de um produto escasso.
 
-### Instruções para a Seção:
-* Descrever detalhadamente: o sistema e interação analisada, principais atores (Scalper, Plataforma e Consumidor Legítimo), objetivo de cada ator, ativos a preservar (Justiça Distributiva, Disponibilidade e Confiança), ações/capacidades, informações observáveis e custos/restrições.
-* Descrever **pelo menos dois pressupostos** (Identidade Única e Latência Justa) e como eles falham (Ataque Sybil e Automação de Rede em Nuvem).
-* Preencher a **Tabela de Atores** (com as 5 colunas obrigatórias).
-* Incluir o **Diagrama de Contexto** (`diagramas/contexto.png` e código editável `diagramas/contexto.puml`).
-* Explicar a **natureza adversarial do caso** (cálculo de extração de excedente econômico vs. erro acidental).
+* **Quais são os principais atores:**  
+  * **Operador de Scalper Bots (Atacante):** Comprador automatizado que utiliza scripts e robôs para monopolizar o estoque com o objetivo de revendê-lo com lucro no mercado paralelo.
+  * **Mecanismo de Fila e Defesa da Plataforma (Defensor):** Conjunto de serviços e regras de negócio responsáveis por proteger a infraestrutura de quedas e garantir que o estoque seja distribuído de forma justa.
+  * *(Ator de contexto) Consumidor Legítimo:* Cliente humano real que tenta comprar o produto manualmente pela interface web ou aplicativo para uso próprio.
+
+* **Qual ativo ou propriedade precisa ser preservado:**  
+  * **Justiça Distributiva (*Fair Allocation*):** Garantir que as 500 unidades sejam distribuídas entre 500 pessoas físicas distintas, evitando que um único operador capture grande parte do estoque.
+  * **Disponibilidade da Infraestrutura:** Manter a API de checkout e os servidores estáveis durante o pico de requisições, sem sofrer lentidão generalizada ou quedas de serviço (DDoS acidental/intencional).
+  * **Confiança na Marca:** Manter a credibilidade da promoção diante do público, evitando a sensação de que o evento foi uma farsa ou que "o site travou de propósito".
+
+* **Quais ações ou capacidades cada ator possui:**  
+  * **Operador de Scalper Bots:** Disparar centenas de requisições por segundo em paralelo; alternar endereços IP usando proxies residenciais; rodar navegadores automatizados (*headless* como Playwright); terceirizar a quebra de CAPTCHAs via APIs de IA; cadastrar contas em massa com dados fictícios ou CPFs vazados.
+  * **Plataforma (Defensora):** Inspecionar cabeçalhos HTTP e assinaturas de conexão (TLS/JA3); aplicar limites de taxa (*Rate Limiting*); reter usuários em salas de espera virtuais (*Waiting Rooms*); exigir desafios computacionais (Proof-of-Work) e CAPTCHA; validar dados cadastrais (CPF); cancelar pedidos suspeitos e trocar a regra de entrega de FIFO para sorteio randômico ponderado.
+
+* **Quais informações cada ator consegue observar:**  
+  * **O Scalper observa:** Códigos de retorno HTTP (200, 403, 429, 503); tempo de resposta da API; cabeçalhos como `Retry-After`; se foi redirecionado para telas de fila; mensagens de erro do backend; e se o contador público de estoque diminuiu ou zerou.
+  * **A Plataforma observa:** Endereço IP de origem, ASN e localização geográfica; volume de requisições por segundo por IP e por sessão; características do navegador (*fingerprint* de Canvas/WebGL); tempo de interação na tela (tempo para preencher campos e cliques); histórico da conta e dados do cartão de crédito.
+
+* **Quais custos ou restrições limitam suas ações:**  
+  * **Restrições do Scalper:** Custo financeiro para pagar proxies residenciais (cobrados por GB) e serviços de quebra de CAPTCHA; custo de obter contas e cartões válidos; risco de ter pedidos cancelados com dinheiro temporariamente retido na operadora do cartão.
+  * **Restrições da Plataforma:** Custo de servidores e serviços externos de proteção (como Cloudflare ou Queue-it); risco de **falsos positivos** (bloquear por engano clientes humanos legítimos); risco de **atrito excessivo** (tornar o processo tão burocrático e lento que clientes reais desistem da compra).
+
+* **Pelo menos dois pressupostos dos quais o sistema depende:**  
+  1. *Pressuposto da Identidade Única:* O sistema assume que cada requisição autenticada com um CPF representa um ser humano real e independente querendo comprar para si.
+  2. *Pressuposto da Latência Justa:* O sistema assume que atender as requisições por ordem de chegada no servidor (FIFO) é um critério justo e equivalente ao esforço de "chegar primeiro".
+
+* **Como esses pressupostos podem falhar:**  
+  1. *Falha da Identidade Única (Ataque Sybil):* Um único cambista pode usar geradores de CPF ou dados comprados para criar dezenas de contas falsas, operando simultaneamente como se fossem vários clientes distintos.
+  2. *Falha da Latência Justa (Vantagem dos Robôs):* Servidores em nuvem executando scripts conseguem fechar conexões e enviar pedidos em menos de 50 milissegundos. Um humano na tela leva entre 2 a 4 segundos apenas para ler e clicar no botão, tornando impossível vencer robôs numa disputa puramente baseada em velocidade de rede.
+
+#### Tabela de Atores
+
+| Ator | Objetivo | Ações ou capacidades | Informações observáveis | Restrições ou custos |
+|---|---|---|---|---|
+| **Operador de Scalper Bots (Atacante)** | Monopolizar as 500 unidades para revenda com lucro no mercado paralelo. | Disparar requisições em massa, rotacionar proxies, rodar navegadores *headless*, quebrar CAPTCHA e operar múltiplas contas. | Códigos de status HTTP, tempo de resposta da API, telas de fila e contagem de estoque. | Custos com proxies e solvers de CAPTCHA, custo de contas/cartões e risco de cancelamento com retenção de saldo. |
+| **Mecanismo de Fila e Defesa (Defensor)** | Garantir distribuição justa (1 item/CPF), manter a infraestrutura estável e proteger a reputação da plataforma. | Aplicar Rate Limiting, colocar em fila virtual, exigir desafios (PoW/CAPTCHA), validar cadastros e adotar sorteio. | Tráfego por segundo, dados de rede/IP, *fingerprints* de navegadores, telemetria de tela e histórico de compras. | Custos de infraestrutura de nuvem, risco de atrito excessivo com usuários e risco de falsos positivos (barrar clientes reais). |
+
+#### Diagrama de Contexto
+
+![Diagrama de Contexto](diagramas/contexto.png)
+
+#### Natureza Adversarial do Caso
+Este cenário é estritamente adversarial porque existe um participante racional e intencional agindo contra as regras de negócio da plataforma para obter lucro financeiro. O cambista não está apenas gerando tráfego alto por acidente ou explorando um bug; ele estuda como a API funciona, mede as respostas da rede e adapta suas ferramentas de propósito para driblar as proteções. Quando a plataforma ergue uma barreira (como bloqueio de IP), o atacante não desiste: ele muda sua estratégia (usando proxies e contas falsas), gerando uma corrida contínua de ataque e defesa.
 
 ---
 
