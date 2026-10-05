@@ -238,24 +238,90 @@ Para modelar a decisão central no instante de abertura da promoção relâmpago
 
 ### 3.4 Ameaças e Riscos
 
-> 👤 **Responsável pelo desenvolvimento:** Gabriel Camargo Ortiz  
-> 📝 *Rascunho base disponível para revisão e commit em [fontes/rascunho_completo_para_integrantes.md](fontes/rascunho_completo_para_integrantes.md)*
+> 👤 **Responsável pelo desenvolvimento:** Gabriel Camargo Ortiz
 
-### Instruções para a Seção:
-* Incluir o **Diagrama de Superfície de Ataque** (`diagramas/superficie-de-ataque.png` e código editável `diagramas/superficie-de-ataque.puml`).
-* Identificar e detalhar **3 Pontos de Exploração** (Endpoint de Checkout, Serviço de Cadastro e Reserva Temporária de Estoque).
-* Formular **3 Cenários de Ameaça** utilizando rigorosamente o template do enunciado:
-  * *Um [ator] pode realizar [ação] por meio de [ponto de exploração], aproveitando [fraqueza ou pressuposto], causando [impacto] sobre [ativo ou propriedade].*
-* Construir a **Tabela de Avaliação de Riscos** ($P \times I = R$) com escala de 1 a 3.
-* Detalhar exaustivamente a **Ameaça Prioritária (A1 — Risco 9)** respondendo:
-  * Como o sistema responde;
-  * Que informação a resposta revela;
-  * Como o adversário se adapta;
-  * Efeitos colaterais em usuários legítimos (fricção, latência e ansiedade);
-  * Risco residual;
-  * O que o sistema precisa continuar preservando.
+A superfície de ataque do sistema está concentrada nos pontos em que o
+participante adversarial consegue interagir diretamente com os mecanismos de
+compra, identificação e reserva de estoque.
+
+O diagrama de superfície de ataque está disponível em:
+
+- `diagramas/superficie-de-ataque.png`
+- `diagramas/superficie-de-ataque.puml`
+
+#### 3.4.1 Pontos de Exploração
+
+Foram identificados três pontos principais de exploração.
+
+##### P1 — Endpoint de Checkout
+
+O endpoint `POST /api/v1/checkout/orders` representa o ponto principal de
+disputa pelo estoque promocional.
+
+Em um modelo baseado principalmente na ordem de chegada das requisições, um
+operador de scalper bots pode utilizar automação e alta concorrência para
+submeter pedidos em uma velocidade muito superior à de consumidores humanos.
+
+A principal fraqueza explorada é considerar a velocidade de chegada como um
+critério suficiente para definir quem terá acesso ao estoque.
+
+##### P2 — Serviço de Contas
+
+O endpoint `POST /api/v1/auth/register` pode ser explorado por um participante
+que tente criar múltiplas identidades para contornar regras como o limite de
+uma unidade por pessoa.
+
+Caso o sistema trate cada conta como uma pessoa distinta sem mecanismos
+adicionais de validação, o pressuposto de identidade única deixa de ser válido.
+
+Esse comportamento caracteriza uma estratégia do tipo Sybil, na qual várias
+identidades são controladas pelo mesmo participante.
+
+##### P3 — Reserva Temporária de Estoque
+
+O endpoint `PUT /api/v1/cart/reserve` permite reservar temporariamente uma
+unidade durante o processo de compra.
+
+Caso o tempo de reserva seja excessivo ou não exista um custo relevante para
+criar uma reserva, bots podem manter várias unidades indisponíveis sem concluir
+o pagamento.
+
+Essa exploração pode reduzir artificialmente o estoque disponível para
+consumidores legítimos, mesmo quando nenhuma venda é efetivamente concluída.
 
 ---
+
+#### 3.4.2 Cenários de Ameaça
+
+A partir dos pontos de exploração identificados, foram definidos três cenários
+de ameaça seguindo o formato estabelecido no enunciado.
+
+##### A1 — Flood Automatizado no Checkout
+
+Um **operador de scalper bots** pode realizar **um grande número de tentativas
+concorrentes de compra** por meio do **endpoint de checkout**, aproveitando
+**a política FIFO e a vantagem de velocidade da automação em relação aos
+usuários humanos**, causando **monopolização do estoque e sobrecarga do
+serviço** sobre a **justiça distributiva e a disponibilidade da plataforma**.
+
+##### A2 — Criação de Múltiplas Identidades
+
+Um **operador de scalper bots** pode realizar **a criação e utilização de
+múltiplas contas** por meio do **serviço de contas**, aproveitando
+**o pressuposto de que cada conta corresponde a uma pessoa distinta**,
+causando **evasão do limite de uma unidade por pessoa** sobre a
+**justiça distributiva do estoque promocional**.
+
+##### A3 — Retenção Artificial de Estoque
+
+Um **operador de scalper bots** pode realizar **reservas repetidas sem
+finalização da compra** por meio do **mecanismo de reserva temporária de
+estoque**, aproveitando **um tempo de retenção elevado e a ausência de custo
+para abandonar reservas**, causando **indisponibilidade temporária de unidades**
+sobre a **disponibilidade do estoque e a confiança dos consumidores**.
+
+---
+
 
 ## 4. Continuidade com o Trabalho 2: Planejamento Arquitetural
 
