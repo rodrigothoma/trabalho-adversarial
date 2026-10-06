@@ -215,17 +215,19 @@ Para modelar a decisão central no instante de abertura da promoção relâmpago
 
 ### 3.3 Modelo Estratégico Dinâmico
 
-Enquanto o modelo estático analisa a decisão em um instante isolado, o modelo dinâmico retrata a disputa ao longo do tempo como um jogo repetido em três rodadas consecutivas:
+Enquanto o modelo estático analisa uma decisão isolada, o modelo dinâmico acompanha três rodadas de interação adversarial, guiadas pelo ciclo:
 
-$$\text{Ação do Atacante} \longrightarrow \text{Resposta do Sistema} \longrightarrow \text{Observação} \longrightarrow \text{Adaptação}$$
+$$\text{Ação} \longrightarrow \text{Resposta} \longrightarrow \text{Observação} \longrightarrow \text{Adaptação}$$
+
+Uma defesa não encerra necessariamente o problema: sua resposta também gera informação. O atacante observa esses sinais e adapta sua estratégia; a plataforma observa o novo comportamento e ajusta a defesa. As decisões de uma rodada alteram as possibilidades da seguinte. As rodadas são cenários conceituais, não medições de uma implementação.
 
 #### Ciclo de Rodadas Adversariais
 
-| Rodada | Ação do participante (Scalper) | Resposta do sistema (Plataforma) | O que se torna observável? | Adaptação para a rodada seguinte |
+| Rodada | Ação do participante (Scalper) | Resposta do sistema ou defensor (Plataforma) | O que se torna observável? | Adaptação para a rodada seguinte |
 | :---: | :--- | :--- | :--- | :--- |
-| **1** | **Ataque em massa por servidor único:** Dispara centenas de requisições por segundo contra a rota `/checkout` a partir de uma máquina virtual em nuvem (VPS) com alta velocidade de rede. | **Bloqueio simples por IP (Rate Limiting):** A API identifica o volume fora do normal vindo de um único IP e corta o acesso temporariamente com erro `HTTP 429 Too Many Requests`. | O código de erro `HTTP 429`, o cabeçalho `Retry-After: 300` e a conexão interrompida. O cambista percebe de imediato que a defesa analisa apenas o IP de origem. | **Distribuição de IPs:** O cambista contrata redes de proxies residenciais rotativos, espalhando as requisições por milhares de conexões domésticas diferentes. |
-| **2** | **Ataque distribuído por múltiplos IPs:** Dispara pedidos usando centenas de IPs residenciais ao mesmo tempo para furar o *Rate Limiter*, usando dados cadastrais fictícios. | **Fila virtual com desafio de integridade:** A plataforma redireciona o tráfego para uma sala de espera que exige resolver um teste computacional rápido (PoW) e um CAPTCHA antes de liberar um token de compra (`ticket_token`). | O redirecionamento `HTTP 302` para a tela de fila e respostas `HTTP 403 Forbidden` para chamadas diretas de API sem o token assinado. O cambista vê que scripts simples de terminal já não conseguem comprar. | **Navegadores automatizados e solvers de IA:** O cambista substitui scripts HTTP simples por navegadores reais automatizados (*headless* Playwright/Puppeteer) integrados a serviços de IA que resolvem CAPTCHA automaticamente. |
-| **3** | **Bypass automatizado dos desafios:** Robôs rodam navegadores completos, resolvem os desafios em menos de um segundo e enviam as ordens de compra assim que a fila libera. | **Fim da ordem de chegada (Sorteio + 2FA):** A plataforma abandona o critério de quem chega primeiro (FIFO). Abre uma janela de 3 minutos para entrada, sorteia as vagas ponderando o histórico da conta e exige código de verificação via SMS/WhatsApp (2FA) e CPF válido. | A ordem de chegada perde valor prático; o resultado passa a depender de sorteio e a plataforma passa a exigir o código numérico enviado para um celular real. | **Contas de terceiros e rede humana:** O cambista precisa alugar dados de pessoas reais e números de celular físicos (chips reais) para tentar aprovar as compras sorteadas. Os custos sobem a ponto de a operação se tornar inviável, forçando o cambista a desistir ou focar em sites concorrentes desprotegidos. |
+| **1** | **Ataque concentrado:** Muitas requisições concorrentes contra o checkout a partir de um servidor ou VPS, explorando a vantagem de velocidade do FIFO. | **Rate Limiting por IP:** A plataforma identifica volume anormal da mesma origem e bloqueia temporariamente o acesso com HTTP 429 Too Many Requests. | O atacante observa erros 429, o cabeçalho Retry-After, quando presente, e a redução de requisições aceitas. O padrão sugere que o IP é um dos critérios de defesa, sem revelar todas as regras internas. | **Distribuição de requisições:** O operador passa a usar proxies residenciais e múltiplos IPs, ajustando o ritmo por origem. |
+| **2** | **Ataque distribuído:** Os proxies da rodada anterior e múltiplos cadastros são utilizados para tentar contornar o limite simples por IP. | **Fila, desafio e token:** Ao observar tráfego distribuído suspeito e concentração de compras, a plataforma adapta a defesa com uma Waiting Room, Proof-of-Work (PoW), CAPTCHA e token de compra assinado. | No fluxo modelado, redirecionamento HTTP 302 para a fila e HTTP 403 Forbidden em chamadas diretas sem token válido indicam que os scripts HTTP simples utilizados até então precisam cumprir o fluxo de fila e desafios. | **Automação de navegador:** O operador passa a usar navegadores automatizados, como Playwright/Puppeteer, capazes de executar JavaScript, e serviços de resolução de desafios, sem garantia de sucesso. |
+| **3** | **Bots mais sofisticados:** A automação da rodada anterior tenta cumprir os desafios e disputar as vagas liberadas, aproximando seu comportamento ao de navegadores legítimos. | **Mudança na distribuição:** Diante de indícios de automação persistente e concentração de estoque, a plataforma deixa de depender exclusivamente do FIFO: adota janela de entrada, sorteio ponderado pelo histórico da conta, validação de identidade, limite de uma unidade por CPF e 2FA via SMS. | Chegar primeiro deixa de garantir a compra. Identidade e 2FA passam a ser exigidos; resultados sucessivos podem sugerir menor utilidade de contas novas, sem revelar os pesos do sorteio. Aumentar apenas o volume de requisições perde eficácia. | **Participação humana ou mudança de alvo:** O operador pode tentar usar contas de terceiros, números reais e automação assistida por humanos. Com custos maiores, reavalia o lucro esperado e pode abandonar a técnica, buscar outro mecanismo ou desistir da promoção. A plataforma continua observando compras coordenadas e revendo as validações. |
 
 #### Diagrama do Ciclo Adaptativo
 
@@ -233,24 +235,26 @@ $$\text{Ação do Atacante} \longrightarrow \text{Resposta do Sistema} \longrigh
 
 #### Perguntas de Análise Dinâmica
 
-* **Quem observa quem?**  
-  O **cambista observa a resposta externa da plataforma**: códigos de erro HTTP, cabeçalhos de rede, tempo de resposta das chamadas, redirecionamentos para telas de fila e se o estoque público está diminuindo.  
-  A **plataforma observa o comportamento dos clientes**: volume e concentração de conexões por segundo, assinaturas de navegador e rede, velocidade de preenchimento de campos e compras finalizadas em frações de segundo incompatíveis com a reação de um ser humano.
+* **Quem observa quem?**<br>
+  O **atacante observa sinais externos**: códigos HTTP, cabeçalhos, latência, fila, exigência de token, verificações e resultados das compras. Esses sinais permitem formular hipóteses, mas não conhecer integralmente a defesa.<br>
+  A **plataforma observa tráfego e comportamento**: volume por IP e sessão, padrões de navegação, histórico de contas e concentração de pedidos. Um indício isolado não prova automação ou fraude.
 
-* **O que cada lado consegue mudar?**  
-  O **cambista consegue mudar:** a infraestrutura de rede (trocando IPs e provedores de proxy), o tipo de ferramenta (passando de scripts simples para navegadores completos automatizados), o ritmo de envio e os dados cadastrais utilizados.  
-  A **plataforma consegue mudar:** os limites de conexões por segundo, o fluxo da compra (colocando salas de espera e tokens temporários), as barreiras de humanidade (CAPTCHA e desafios de máquina), a exigência de confirmação no celular (2FA) e a própria regra de entrega do produto (trocando ordem de chegada por sorteio).
+* **O que cada lado consegue mudar?**<br>
+  O **atacante** pode alterar infraestrutura de rede, distribuição e ritmo das requisições, ferramentas, contas e identidades utilizadas.<br>
+  A **plataforma** pode ajustar Rate Limiting, regras da fila, desafios, tokens, validações de identidade, 2FA e critérios de distribuição. As mudanças buscam preservar justiça distributiva, disponibilidade e confiança, conforme a Seção 3.1.
 
-* **O que dispara uma adaptação?**  
-  Para o **cambista:** a perda de eficiência do ataque — quando os robôs recebem erros de bloqueio (403, 429) ou quando o estoque acaba para clientes comuns antes de seus scripts conseguirem fechar os pedidos.  
-  Para a **plataforma:** o sinal de que o objetivo de negócio foi quebrado — 500 unidades esgotadas em 2 segundos, servidores caindo pelo volume excessivo ou reclamações em massa de clientes nas redes sociais dizendo que a promoção foi enganosa.
+* **O que dispara uma adaptação?**<br>
+  Para o **atacante**, bloqueios, aumento de erros, perda de eficácia e redução das compras obtidas motivam novas estratégias.<br>
+  Para a **plataforma**, comportamento anormal, sobrecarga, fraude, reclamações e concentração excessiva de estoque indicam que a proteção anterior pode ter perdido eficácia. Na Rodada 2, ela observa a distribuição do tráfego; na Rodada 3, avalia a persistência da automação após os desafios.
 
-* **Qual é o custo da adaptação para cada lado?**  
-  Para o **cambista:** gastos financeiros com planos de proxies residenciais, assinaturas de ferramentas que quebram CAPTCHA, compra de dados de terceiros e o trabalho técnico de atualizar os scripts a cada mudança do site.  
-  Para a **plataforma:** custos com servidores e serviços de segurança na nuvem, esforço de engenharia para criar regras de fila e, principalmente, **o incômodo gerado para o cliente honesto**, que precisa enfrentar salas de espera, resolver quebra-cabeças visuais e esperar mensagens de SMS no celular.
+* **Qual é o custo da adaptação para cada lado?**<br>
+  O **atacante** arca com proxies, infraestrutura, contas, números de telefone, desenvolvimento e coordenação de participantes humanos. Complexidade e custo econômico aumentam, mas a inviabilidade depende do lucro esperado com a revenda.<br>
+  A **plataforma** arca com infraestrutura, serviços de proteção e desenvolvimento, além de maior latência e risco de falsos positivos. Para consumidores legítimos, fila, CAPTCHA, verificações adicionais e espera por SMS aumentam o tempo de checkout e a frustração. Clientes podem ser bloqueados por engano, e ponderar o histórico pode prejudicar novos compradores legítimos.
 
-* **Em que ponto pode surgir uma corrida armamentista?**  
-  A corrida armamentista começa quando a defesa deixa de olhar apenas para dados simples de rede (como IP) e passa a analisar **como o cliente se comporta e interage na página**. A partir desse momento, o atacante é obrigado a criar robôs que imitam a navegação humana com perfeição (movendo o mouse com curvas naturais, variando o tempo entre cliques e simulando navegadores reais). Essa disputa atinge o limite quando a plataforma para de tentar adivinhar se a requisição é de um robô na velocidade da rede e transfere o controle para **barreiras de identidade física (sorteios com 2FA e CPF auditado)**, transformando uma briga técnica de servidores em um filtro de custo financeiro real.
+* **Em que ponto surge uma corrida armamentista?**<br>
+  Ela já aparece na passagem da Rodada 1 para a 2: o bloqueio por IP gera informação, o atacante distribui o tráfego e a plataforma precisa responder novamente. Na passagem para a Rodada 3, fila e desafios estimulam automação mais sofisticada, levando o defensor a mudar a alocação e reforçar a identidade. Ambos elevam custo e complexidade. Sorteio e 2FA alteram os incentivos, mas não encerram o ciclo: participação humana coordenada ainda pode exigir nova observação e adaptação defensiva.
+
+As rodadas ampliam as estratégias disponíveis em relação à matriz 2x2 da Seção 3.2. Seus payoffs ordinais descrevem aquele recorte estático, não valores monetários ou resultados fixos para todas as rodadas. A possibilidade de desistência surge com novas alternativas e custos. As defesas correspondem aos modos planejados na Seção 4: limitação por IP, fila com token e sorteio com identidade; sua implementação pertence ao Trabalho 2.
 
 ---
 
