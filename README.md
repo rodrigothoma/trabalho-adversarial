@@ -143,6 +143,8 @@ A disputa evolui em um ciclo contínuo de ataque, defesa e adaptação:
 
 ![Diagrama de Contexto](diagramas/contexto.png)
 
+Fonte editável: [PlantUML](diagramas/contexto.puml).
+
 #### Natureza Adversarial do Caso
 Este cenário é estritamente adversarial porque existe um participante racional e intencional agindo contra as regras de negócio da plataforma para obter lucro financeiro. O cambista não está apenas gerando tráfego alto por acidente ou explorando um bug; ele estuda como a API funciona, mede as respostas da rede e adapta suas ferramentas de propósito para driblar as proteções. Quando a plataforma ergue uma barreira (como bloqueio de IP), o atacante não desiste: ele muda sua estratégia (usando proxies e contas falsas), gerando uma corrida contínua de ataque e defesa.
 
@@ -231,39 +233,50 @@ Uma defesa não encerra necessariamente o problema: sua resposta também gera in
 
 #### Diagrama do Ciclo Adaptativo
 
+![Diagrama do Ciclo Adaptativo](diagramas/ciclo-adaptativo.png)
+
+Fontes editáveis equivalentes: [PlantUML](diagramas/ciclo-adaptativo.puml) e [Mermaid](diagramas/ciclo-adaptativo.mmd).
+
+<details>
+<summary>Clique para expandir a especificação Mermaid equivalente</summary>
+
 ```mermaid
 sequenceDiagram
-    participant a as Operador de Scalper Bots
-    participant d as Plataforma de E-Commerce
-    Note over a,d: Rodada 1: ataque concentrado
-    a->>d: Flood concorrente por um IP (VPS), explorando FIFO
-    d->>d: Observa volume anormal e adapta limite por IP
-    d->>a: Rate Limiting / bloqueio temporário: HTTP 429
-    a->>a: Observa 429 e Retry-After, quando presente, e infere limitação por IP
-    a->>a: Adapta estratégia: proxies residenciais e múltiplos IPs
-    Note over a,d: Rodada 2: ataque distribuído
-    a->>d: Distribui requisições por proxies e múltiplos cadastros
-    d->>d: Observa tráfego distribuído suspeito e concentração de compras
-    d->>d: Adapta defesa: fila, PoW, CAPTCHA e token assinado
-    d->>a: HTTP 302 para fila / HTTP 403 sem token válido
-    a->>a: Observa exigência de cumprir o fluxo de fila e desafios
-    a->>a: Adapta estratégia: navegador automatizado e resolução de desafios
-    Note over a,d: Rodada 3: bots mais sofisticados
-    a->>d: Automação de navegador tenta cumprir desafios e obter vagas
-    d->>d: Observa automação persistente e concentração de estoque
-    d->>d: Adapta defesa: janela, sorteio por histórico, identidade, 1 item/CPF e 2FA
-    d->>a: Distribuição por sorteio e verificação via SMS
-    a->>a: Observa que velocidade não garante compra e identidades ganham valor
-    a->>a: Reavalia contas de terceiros, números reais e participação humana
-    a->>a: Custos versus lucro esperado: adaptar ou abandonar o alvo
-    a->>d: Se continuar: novas tentativas com participação humana
-    d->>d: Observa coordenação e revê validações: nova rodada
-    Note over a,d: Cenário conceitual: sinais permitem inferências, não certeza.<br/>Defesas também geram fila, latência e falsos positivos para clientes legítimos.
+    autonumber
+    actor Scalper as Scalper (Atacante)
+    participant Borda as Borda & Gateway (WAF)
+    participant Fila as Fila Virtual (Waiting Room)
+    participant Core as Motor de Checkout & Estoque
+    actor Legitimo as Consumidor Legítimo
+
+    Note over Scalper, Legitimo: RODADA 1: Força Bruta Monolítica vs. Rate Limiting Estático por IP
+    Scalper->>Borda: Flood de 1.000 req/s via único IP (VPS)
+    Borda-->>Scalper: HTTP 429 Too Many Requests (Rate Limit ativado)
+    Note over Scalper: [Observabilidade]: HTTP 429 e Retry-After. Infere bloqueio por IP.
+    Note over Scalper: [Adaptação para Rodada 2]: Adota pool de proxies residenciais rotativos.
+
+    Note over Scalper, Legitimo: RODADA 2: Pulverização de IPs vs. Fila com Desafio de Integridade
+    Scalper->>Borda: Requisições distribuídas via 500 IPs residenciais + contas sintéticas
+    Borda->>Fila: Tráfego suspeito redirecionado para a Waiting Room
+    Fila-->>Scalper: HTTP 302 Redirect + Desafio Proof-of-Work (PoW) e CAPTCHA
+    Scalper->>Core: Tentativa de checkout direto sem token de fila
+    Core-->>Scalper: HTTP 403 Forbidden (Token de fila ausente/inválido)
+    Note over Scalper: [Observabilidade]: Redirecionamento 302 e bloqueio 403. Scripts HTTP puros falham.
+    Note over Scalper: [Adaptação para Rodada 3]: Bots com navegadores headless e solvers de CAPTCHA.
+
+    Note over Scalper, Legitimo: RODADA 3: Guerra de Latência vs. Sorteio Ponderado por Reputação e 2FA
+    Scalper->>Fila: Bots resolvem desafio em ~1s e disputam fila
+    Legitimo->>Fila: Usuário legítimo ingressa na fila após 15s (digitação manual)
+    Note over Fila, Core: [Resposta da Plataforma]: Abandono do FIFO puro; Janela de 3 min com Sorteio Ponderado, limite 1 un./CPF e 2FA
+    Fila->>Core: Bilhetes elegíveis sorteados (priorizando contas legítimas)
+    Core->>Legitimo: Solicitação de 2FA via SMS/App
+    Legitimo->>Core: Confirmação do código 2FA
+    Core-->>Legitimo: HTTP 200 OK — Compra Concluída com Sucesso!
+    Core-->>Scalper: Contas sem histórico, inconsistentes ou com falha no 2FA descartadas
+    Note over Scalper: [Observabilidade]: Velocidade pura não garante estoque; desfecho estocástico e 2FA obrigatório.
+    Note over Scalper: [Adaptação / Inviabilidade Econômica]: Custo de fazendas de identidades reais supera o lucro esperado.
 ```
-
-Fontes equivalentes: [PlantUML](diagramas/ciclo-adaptativo.puml) e [Mermaid](diagramas/ciclo-adaptativo.mmd).
-
-O [PNG existente](diagramas/ciclo-adaptativo.png) corresponde à versão anterior e precisa ser exportado novamente a partir de uma das fontes atualizadas. O script `gerar_diagramas.py` desenha conteúdo próprio com Matplotlib e não converte essas fontes; executá-lo sem revisão reproduz a versão anterior.
+</details>
 
 #### Perguntas de Análise Dinâmica
 
@@ -296,10 +309,11 @@ A superfície de ataque do sistema está concentrada nos pontos em que o
 participante adversarial consegue interagir diretamente com os mecanismos de
 compra, identificação e reserva de estoque.
 
-O diagrama de superfície de ataque está disponível em:
+#### Diagrama de Superfície de Ataque
 
-- `diagramas/superficie-de-ataque.png`
-- `diagramas/superficie-de-ataque.puml`
+![Diagrama de Superfície de Ataque](diagramas/superficie-de-ataque.png)
+
+Fonte editável equivalente: [PlantUML](diagramas/superficie-de-ataque.puml).
 
 #### 3.4.1 Pontos de Exploração
 
