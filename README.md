@@ -625,16 +625,23 @@ Para garantir total conformidade com o **Critério 5 da Rubrica de Avaliação**
 
 > **"Depois que o sistema responder, o que o outro lado aprenderá e tentará fazer em seguida?"**
 
-Depois que a plataforma responde com a terceira camada de defesa (sorteio com histórico de conta e confirmação por 2FA), o cambista aprende que a briga mudou de terreno:
+Ao final da terceira rodada, a resposta da plataforma combina sorteio ponderado pelo histórico da conta, validação de identidade, limite por CPF e 2FA. O operador de Scalper Bots aprende com as exigências visíveis e com os resultados das próprias tentativas, embora não conheça necessariamente todos os critérios internos.
 
-### 1. O que o atacante aprende:
-* **Velocidade de rede não ganha mais a compra:** Ter a conexão mais rápida ou o servidor mais potente não adianta mais nada, porque a ordem de chegada (FIFO) foi abandonada.
-* **Robôs sem histórico são ignorados:** Contas criadas de última hora ou sem compras anteriores têm chance praticamente nula de serem sorteadas.
-* **Identidade falsa ficou cara:** Não basta mais inventar dados; o sistema agora exige validação real no celular (SMS/WhatsApp) e checagem de CPF e cartão no momento do pagamento.
+### 1. O que o atacante aprende
 
-### 2. O que o atacante tentará fazer em seguida:
-O cambista deixa de atacar puramente a camada técnica de software e passa a explorar a **camada humana e de identidades reais**:
+* **Velocidade pura deixa de garantir sucesso:** Dentro da janela de entrada, chegar primeiro não assegura a compra. Gerar milhares de requisições não basta para obter mais unidades quando a distribuição depende de sorteio e identidade.
+* **Contas novas ou artificiais podem perder eficácia:** O histórico pode influenciar as chances, conforme os pesos adotados. Isso não significa que toda conta nova seja fraudulenta ou tenha chance nula.
+* **Identidades reais ganham valor:** As verificações de CPF e 2FA aumentam a importância de contas e números de telefone válidos. Esses controles dificultam o abuso, mas não comprovam, por si só, que cada compra corresponde a um consumidor independente.
+* **A automação pode apresentar retorno decrescente:** Aumentar a velocidade ou o volume dos bots pode acrescentar custo sem gerar crescimento proporcional das compras obtidas.
 
-* **Redes de afiliados / "Grupos de compra":** Em vez de usar robôs sozinhos, o cambista recruta pessoas reais em grupos de mensagens (pagando uma comissão fixa) para que elas usem seus próprios CPFs, celulares e cartões na promoção.
-* **Automação assistida (*Human-in-the-Loop*):** Desenvolve extensões de navegador ou scripts leves que ajudam essas pessoas a clicar rápido, mas deixam o próprio humano resolver o CAPTCHA e digitar o código recebido no celular.
-* **Migração para alvos mais fáceis:** Se o custo de pagar comissões e coordenar pessoas reais for maior que o lucro de revender o produto, o cambista racional simplesmente **abandona esse site** e vai atacar e-commerces concorrentes que ainda usam a regra ingênua de ordem de chegada sem proteção.
+### 2. O que ele pode tentar fazer em seguida
+
+O atacante pode deslocar parte do esforço para a participação de pessoas reais: contas legítimas de terceiros, números reais, redes de afiliados ou grupos de compra. Outra possibilidade é a automação assistida por humanos (*Human-in-the-Loop*), combinando ferramentas automatizadas com participação humana nas verificações. São possíveis evoluções dos incentivos adversariais, sem garantia de êxito.
+
+Essas alternativas mantêm o objetivo de concentrar estoque para revenda, mas acrescentam custos de recrutamento, coordenação, infraestrutura e manutenção de contas. A plataforma, por sua vez, pode observar indícios de compras coordenadas e revisar suas validações, considerando o risco de bloquear consumidores legítimos.
+
+### 3. Decisão econômica e continuidade do ciclo
+
+No modelo, o atacante é racional: compara o custo total da estratégia com o ganho esperado na revenda, considerando a chance de compra e o risco de cancelamento. Se os custos se aproximarem ou ultrapassarem esse ganho, ele pode abandonar a técnica, procurar outro mecanismo de exploração, migrar para um sistema menos protegido ou desistir daquela promoção. A desistência é uma possibilidade econômica, não um resultado garantido por sorteio ou 2FA.
+
+Assim, uma resposta defensiva não encerra necessariamente a interação. Ela altera os incentivos, as informações disponíveis e as opções da próxima rodada. O adversário aprende com a resposta e decide sua próxima ação; o defensor observa essa adaptação e reavalia sua proteção, preservando justiça distributiva, disponibilidade e confiança.
