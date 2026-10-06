@@ -597,11 +597,18 @@ Para garantir total conformidade com o **Critério 5 da Rubrica de Avaliação**
 
 ## 8. Pergunta Final
 
-> 👤 **Responsável pelo desenvolvimento:** Artur Wahlbrink Kraemer  
-> 📝 *Rascunho base disponível para revisão e commit em [fontes/rascunho_completo_para_integrantes.md](fontes/rascunho_completo_para_integrantes.md)*
-
-### Pergunta a ser respondida:
 > **"Depois que o sistema responder, o que o outro lado aprenderá e tentará fazer em seguida?"**
 
-* Analisar o que o scalper aprende com o sorteio ponderado e 2FA (que a velocidade de rede foi anulada).
-* Analisar a transição do atacante para engenharia social e economia de identidades físicas (*Human-in-the-Loop Sybil Farms*), ou abandono da plataforma por inviabilidade econômica.
+Depois que a plataforma responde com a terceira camada de defesa (sorteio com histórico de conta e confirmação por 2FA), o cambista aprende que a briga mudou de terreno:
+
+### 1. O que o atacante aprende:
+* **Velocidade de rede não ganha mais a compra:** Ter a conexão mais rápida ou o servidor mais potente não adianta mais nada, porque a ordem de chegada (FIFO) foi abandonada.
+* **Robôs sem histórico são ignorados:** Contas criadas de última hora ou sem compras anteriores têm chance praticamente nula de serem sorteadas.
+* **Identidade falsa ficou cara:** Não basta mais inventar dados; o sistema agora exige validação real no celular (SMS/WhatsApp) e checagem de CPF e cartão no momento do pagamento.
+
+### 2. O que o atacante tentará fazer em seguida:
+O cambista deixa de atacar puramente a camada técnica de software e passa a explorar a **camada humana e de identidades reais**:
+
+* **Redes de afiliados / "Grupos de compra":** Em vez de usar robôs sozinhos, o cambista recruta pessoas reais em grupos de mensagens (pagando uma comissão fixa) para que elas usem seus próprios CPFs, celulares e cartões na promoção.
+* **Automação assistida (*Human-in-the-Loop*):** Desenvolve extensões de navegador ou scripts leves que ajudam essas pessoas a clicar rápido, mas deixam o próprio humano resolver o CAPTCHA e digitar o código recebido no celular.
+* **Migração para alvos mais fáceis:** Se o custo de pagar comissões e coordenar pessoas reais for maior que o lucro de revender o produto, o cambista racional simplesmente **abandona esse site** e vai atacar e-commerces concorrentes que ainda usam a regra ingênua de ordem de chegada sem proteção.
