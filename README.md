@@ -44,7 +44,7 @@
 
 Este trabalho analisa a disputa em torno do checkout concorrente em promoções relâmpago (*Flash Sales*) de Black Friday, onde um lote limitado de 500 unidades de um produto de alta demanda é disponibilizado com grande desconto.
 
-### ⚔️ Por que o sistema é adversarial?
+### Por que o sistema é adversarial?
 
 Existe um conflito direto de incentivos entre quem compra e quem vende:
 
@@ -53,14 +53,14 @@ Existe um conflito direto de incentivos entre quem compra e quem vende:
 
 Essa disputa não decorre de falhas ou instabilidades acidentais: o cambista gasta dinheiro com servidores, proxies e ferramentas automatizadas com a intenção explícita de furar as regras e esgotar o estoque antes dos clientes legítimos.
 
-### ⚖️ Como os participantes tomam decisões?
+### Como os participantes tomam decisões?
 
 Os dois lados agem de forma calculada, avaliando custos e ganhos:
 
 * **O cambista (atacante):** Avalia quanto vai gastar em infraestrutura (proxies residenciais, serviços que quebram CAPTCHA e contas falsas) contra o lucro líquido que terá revendendo os produtos. Se o custo de burlar o sistema for menor que o lucro esperado, o ataque compensa.
 * **A plataforma (defensora):** Decide quais barreiras de proteção ativar (*Rate Limiting*, filas virtuais, desafios criptográficos e sorteios). O desafio aqui é barrar os bots sem deixar a compra lenta ou frustrante para os clientes de verdade, evitando falsos positivos.
 
-### 🔄 Como a interação evolui ao longo das rodadas?
+### Como a interação evolui ao longo das rodadas?
 
 A disputa evolui em um ciclo contínuo de ataque, defesa e adaptação:
 
@@ -69,13 +69,13 @@ A disputa evolui em um ciclo contínuo de ataque, defesa e adaptação:
 3. **Adaptação do atacante:** O cambista percebe o bloqueio por IP e espalha suas requisições por milhares de proxies residenciais, fazendo cada requisição parecer vir de uma conexão doméstica diferente.
 4. **Escalação da defesa:** Como filtrar IP já não funciona, a plataforma adota salas de espera virtuais, desafios de integridade e sorteios de vagas. Isso força o cambista a gastar cada vez mais com navegadores completos e contas laranjas, até que a fraude deixe de ser lucrativa.
 
-> 💡 **Continuidade com o Trabalho 2:** Esta análise serve como especificação direta para a implementação prática no Trabalho 2, onde construiremos uma API de checkout, um pipeline de defesas comutáveis e uma simulação com clientes reais competindo contra robôs.
+> **Continuidade com o Trabalho 2:** Esta análise serve como especificação direta para a implementação prática no Trabalho 2, onde construiremos uma API de checkout, um pipeline de defesas comutáveis e uma simulação com clientes reais competindo contra robôs.
 
 ---
 
 ## 2. Escolha do Sistema
 
-### 📋 Ficha Técnica da Interação
+### Ficha Técnica da Interação
 
 | Atributo | Definição no Projeto |
 | :--- | :--- |
@@ -83,7 +83,7 @@ A disputa evolui em um ciclo contínuo de ataque, defesa e adaptação:
 | **Interação Específica** | Envio e validação da requisição de compra (`POST /api/v1/checkout/orders`) para adquirir um produto promocional limitado a 500 unidades no exato momento da abertura das vendas. |
 | **Contexto de Operação** | Evento de pico promocional (Black Friday) com estoque finito, abertura simultânea para todos os clientes e grande incentivo para revenda no mercado paralelo. |
 
-### 🎯 Conformidade com os Critérios Obrigatórios do Enunciado
+### Conformidade com os Critérios Obrigatórios do Enunciado
 
 | # | Critério Obrigatório | Atendimento no Sistema Analisado |
 | :-: | :--- | :--- |
@@ -149,9 +149,6 @@ Este cenário é estritamente adversarial porque existe um participante racional
 ---
 
 ### 3.2 Modelo Estratégico Estático
-
-> 👤 **Responsável pelo desenvolvimento:** Fade Hassan Husein Kanaan  
-> ✅ **Status:** Concluído e Especificado
 
 Para modelar a decisão central no instante de abertura da promoção relâmpago, definimos um jogo simultâneo em forma normal com dois jogadores e duas ações disponíveis para cada um:
 * **Jogador A (Scalper):**
@@ -258,8 +255,6 @@ $$\text{Ação do Atacante} \longrightarrow \text{Resposta do Sistema} \longrigh
 ---
 
 ### 3.4 Ameaças e Riscos
-
-> 👤 **Responsável pelo desenvolvimento:** Gabriel Camargo Ortiz
 
 A superfície de ataque do sistema está concentrada nos pontos em que o
 participante adversarial consegue interagir diretamente com os mecanismos de
@@ -467,9 +462,6 @@ o processo de compra inviável para os participantes legítimos.
 
 ## 4. Continuidade com o Trabalho 2: Planejamento Arquitetural
 
-> 👤 **Responsável pelo desenvolvimento:** Fade Hassan Husein Kanaan  
-> ✅ **Status:** Concluído e Especificado
-
 Este Trabalho 1 funciona como a especificação de requisitos e desenho conceitual para a **implementação funcional que será desenvolvida no Trabalho 2**.
 
 ```mermaid
@@ -535,8 +527,6 @@ Todas as fontes teóricas, padrões de segurança em software e estudos de caso 
 ---
 
 ## 6. Declaração sobre Uso de IA Generativa
-
-> 👤 **Responsável pelo desenvolvimento:** Gabriel Camargo Ortiz  
 
 Durante o desenvolvimento deste trabalho, foram utilizadas ferramentas de IA
 generativa, incluindo **Claude** e **ChatGPT**, como apoio à produção e revisão
