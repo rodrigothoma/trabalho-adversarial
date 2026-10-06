@@ -218,21 +218,42 @@ Para modelar a decisão central no instante de abertura da promoção relâmpago
 
 ### 3.3 Modelo Estratégico Dinâmico
 
-> 👤 **Responsável pelo desenvolvimento:** Artur Wahlbrink Kraemer  
-> 📝 *Rascunho base disponível para revisão e commit em [fontes/rascunho_completo_para_integrantes.md](fontes/rascunho_completo_para_integrantes.md)*
+Enquanto o modelo estático analisa a decisão em um instante isolado, o modelo dinâmico retrata a disputa ao longo do tempo como um jogo repetido em três rodadas consecutivas:
 
-### Instruções para a Seção:
-* Representar pelo menos **três rodadas consecutivas** no ciclo: *Ação $\rightarrow$ Resposta $\rightarrow$ Observação $\rightarrow$ Adaptação*:
-  * **Rodada 1:** Força bruta de requisições via VPS $\rightarrow$ Rate Limiting por IP (HTTP 429) $\rightarrow$ Adaptação para proxies residenciais rotativos;
-  * **Rodada 2:** Pulverização de IPs $\rightarrow$ Fila Virtual com Token Criptográfico (PoW/CAPTCHA) $\rightarrow$ Adaptação para navegadores headless e solvers de IA;
-  * **Rodada 3:** Guerra de latência $\rightarrow$ Quebra do FIFO com Sorteio Ponderado por Reputação e 2FA $\rightarrow$ Adaptação para fazendas de identidades reais e SMS (inviabilidade econômica).
-* Incluir o **Diagrama do Ciclo Adaptativo** (`diagramas/ciclo-adaptativo.png` e código editável `diagramas/ciclo-adaptativo.puml`).
-* Responder às 5 perguntas de dinâmica adversarial:
-  1. *Quem observa quem?*
-  2. *O que cada lado consegue mudar?*
-  3. *O que dispara uma adaptação?*
-  4. *Qual é o custo da adaptação para cada lado?*
-  5. *Em que ponto pode surgir uma corrida armamentista?*
+$$\text{Ação do Atacante} \longrightarrow \text{Resposta do Sistema} \longrightarrow \text{Observação} \longrightarrow \text{Adaptação}$$
+
+#### Ciclo de Rodadas Adversariais
+
+| Rodada | Ação do participante (Scalper) | Resposta do sistema (Plataforma) | O que se torna observável? | Adaptação para a rodada seguinte |
+| :---: | :--- | :--- | :--- | :--- |
+| **1** | **Ataque em massa por servidor único:** Dispara centenas de requisições por segundo contra a rota `/checkout` a partir de uma máquina virtual em nuvem (VPS) com alta velocidade de rede. | **Bloqueio simples por IP (Rate Limiting):** A API identifica o volume fora do normal vindo de um único IP e corta o acesso temporariamente com erro `HTTP 429 Too Many Requests`. | O código de erro `HTTP 429`, o cabeçalho `Retry-After: 300` e a conexão interrompida. O cambista percebe de imediato que a defesa analisa apenas o IP de origem. | **Distribuição de IPs:** O cambista contrata redes de proxies residenciais rotativos, espalhando as requisições por milhares de conexões domésticas diferentes. |
+| **2** | **Ataque distribuído por múltiplos IPs:** Dispara pedidos usando centenas de IPs residenciais ao mesmo tempo para furar o *Rate Limiter*, usando dados cadastrais fictícios. | **Fila virtual com desafio de integridade:** A plataforma redireciona o tráfego para uma sala de espera que exige resolver um teste computacional rápido (PoW) e um CAPTCHA antes de liberar um token de compra (`ticket_token`). | O redirecionamento `HTTP 302` para a tela de fila e respostas `HTTP 403 Forbidden` para chamadas diretas de API sem o token assinado. O cambista vê que scripts simples de terminal já não conseguem comprar. | **Navegadores automatizados e solvers de IA:** O cambista substitui scripts HTTP simples por navegadores reais automatizados (*headless* Playwright/Puppeteer) integrados a serviços de IA que resolvem CAPTCHA automaticamente. |
+| **3** | **Bypass automatizado dos desafios:** Robôs rodam navegadores completos, resolvem os desafios em menos de um segundo e enviam as ordens de compra assim que a fila libera. | **Fim da ordem de chegada (Sorteio + 2FA):** A plataforma abandona o critério de quem chega primeiro (FIFO). Abre uma janela de 3 minutos para entrada, sorteia as vagas ponderando o histórico da conta e exige código de verificação via SMS/WhatsApp (2FA) e CPF válido. | A ordem de chegada perde valor prático; o resultado passa a depender de sorteio e a plataforma passa a exigir o código numérico enviado para um celular real. | **Contas de terceiros e rede humana:** O cambista precisa alugar dados de pessoas reais e números de celular físicos (chips reais) para tentar aprovar as compras sorteadas. Os custos sobem a ponto de a operação se tornar inviável, forçando o cambista a desistir ou focar em sites concorrentes desprotegidos. |
+
+#### Diagrama do Ciclo Adaptativo
+
+![Diagrama do Ciclo Adaptativo](diagramas/ciclo-adaptativo.png)
+
+#### Perguntas de Análise Dinâmica
+
+* **Quem observa quem?**  
+  O **cambista observa a resposta externa da plataforma**: códigos de erro HTTP, cabeçalhos de rede, tempo de resposta das chamadas, redirecionamentos para telas de fila e se o estoque público está diminuindo.  
+  A **plataforma observa o comportamento dos clientes**: volume e concentração de conexões por segundo, assinaturas de navegador e rede, velocidade de preenchimento de campos e compras finalizadas em frações de segundo incompatíveis com a reação de um ser humano.
+
+* **O que cada lado consegue mudar?**  
+  O **cambista consegue mudar:** a infraestrutura de rede (trocando IPs e provedores de proxy), o tipo de ferramenta (passando de scripts simples para navegadores completos automatizados), o ritmo de envio e os dados cadastrais utilizados.  
+  A **plataforma consegue mudar:** os limites de conexões por segundo, o fluxo da compra (colocando salas de espera e tokens temporários), as barreiras de humanidade (CAPTCHA e desafios de máquina), a exigência de confirmação no celular (2FA) e a própria regra de entrega do produto (trocando ordem de chegada por sorteio).
+
+* **O que dispara uma adaptação?**  
+  Para o **cambista:** a perda de eficiência do ataque — quando os robôs recebem erros de bloqueio (403, 429) ou quando o estoque acaba para clientes comuns antes de seus scripts conseguirem fechar os pedidos.  
+  Para a **plataforma:** o sinal de que o objetivo de negócio foi quebrado — 500 unidades esgotadas em 2 segundos, servidores caindo pelo volume excessivo ou reclamações em massa de clientes nas redes sociais dizendo que a promoção foi enganosa.
+
+* **Qual é o custo da adaptação para cada lado?**  
+  Para o **cambista:** gastos financeiros com planos de proxies residenciais, assinaturas de ferramentas que quebram CAPTCHA, compra de dados de terceiros e o trabalho técnico de atualizar os scripts a cada mudança do site.  
+  Para a **plataforma:** custos com servidores e serviços de segurança na nuvem, esforço de engenharia para criar regras de fila e, principalmente, **o incômodo gerado para o cliente honesto**, que precisa enfrentar salas de espera, resolver quebra-cabeças visuais e esperar mensagens de SMS no celular.
+
+* **Em que ponto pode surgir uma corrida armamentista?**  
+  A corrida armamentista começa quando a defesa deixa de olhar apenas para dados simples de rede (como IP) e passa a analisar **como o cliente se comporta e interage na página**. A partir desse momento, o atacante é obrigado a criar robôs que imitam a navegação humana com perfeição (movendo o mouse com curvas naturais, variando o tempo entre cliques e simulando navegadores reais). Essa disputa atinge o limite quando a plataforma para de tentar adivinhar se a requisição é de um robô na velocidade da rede e transfere o controle para **barreiras de identidade física (sorteios com 2FA e CPF auditado)**, transformando uma briga técnica de servidores em um filtro de custo financeiro real.
 
 ---
 
