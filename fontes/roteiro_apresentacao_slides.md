@@ -4,26 +4,14 @@
 > **Disciplina:** Engenharia de Software Adversarial — UNIPAMPA (Campus Alegrete)  
 > **Duração Total Oficial:** Limite estrito de **10 minutos** (600 segundos)  
 > **Integrantes e Ordem de Fala:** Rodrigo Thoma da Silva, Fade Hassan Husein Kanaan, Gabriel Camargo Ortiz e Artur Wahlbrink Kraemer  
-> **Formato:** Apresentação em slides gravada em vídeo
+> **Formato:** Apresentação em slides gravada em vídeo  
+> 🎥 **Vídeo:** https://www.youtube.com/watch?v=ChZ1d21_zDU  
+> 📄 **Slides (PDF):** https://drive.google.com/file/d/1EjfK8Uhjp4YEU_AqnSblfvfQnJEQJuIi/view?usp=sharing  
+> 🌐 **Slides Interativos:** [Branch `slides`](../../tree/slides)
 
 ---
 
 ## 1. Visão Geral da Linha do Tempo (10 Minutos)
-
-```mermaid
-gantt
-    title Cronograma Oficial de Apresentação (Limite Estrito: 10 minutos)
-    dateFormat X
-    axisFormat %s min
-    section Rodrigo Thoma
-    S1-S3: Abertura, Delimitação e Atores/Pressupostos : 0, 2
-    section Fade Kanaan
-    S4-S5: Teoria dos Jogos (2x2) e Simulação Visual    : 2, 3.5
-    section Gabriel Ortiz
-    S6-S7: Modelo Dinâmico (3 Rodadas) e Reflexão       : 3.5, 6.5
-    section Artur Kraemer
-    S8-S11: Superfície, Riscos, Síntese e Encerramento  : 6.5, 10
-```
 
 ### Matriz de Alinhamento com a Divisão Oficial da Disciplina
 

@@ -16,14 +16,9 @@
 
 ---
 
-### 📌 Materiais de Apresentação
-
-| Recurso | Formato / Plataforma | Link de Acesso |
-| :--- | :---: | :--- |
-| 📄 **Slides da Apresentação** | PDF (Google Drive) | *[Inserir link do Google Drive aqui]* |
-| 🎥 **Vídeo de Apresentação** | YouTube (Gravação de Vídeo com Slides) | *[Inserir link do YouTube aqui]* |
-| 📜 **Roteiro dos Slides e Falas** | Markdown | [fontes/roteiro_apresentacao_slides.md](fontes/roteiro_apresentacao_slides.md) |
-| 📑 **Rascunho Base para Integrantes** | Markdown | [fontes/rascunho_completo_para_integrantes.md](fontes/rascunho_completo_para_integrantes.md) |
+> 🎥 **Vídeo de Apresentação:** https://www.youtube.com/watch?v=ChZ1d21_zDU  
+> 📄 **Slides da Apresentação (PDF):** https://drive.google.com/file/d/1EjfK8Uhjp4YEU_AqnSblfvfQnJEQJuIi/view?usp=sharing  
+> 🌐 **Slides Interativos (Reveal.js):** [Branch `slides`](../../tree/slides) *(com motor de simulação visual)*
 
 ---
 
@@ -235,48 +230,7 @@ Uma defesa não encerra necessariamente o problema: sua resposta também gera in
 
 ![Diagrama do Ciclo Adaptativo](diagramas/ciclo-adaptativo.png)
 
-Fontes editáveis equivalentes: [PlantUML](diagramas/ciclo-adaptativo.puml) e [Mermaid](diagramas/ciclo-adaptativo.mmd).
-
-<details>
-<summary>Clique para expandir a especificação Mermaid equivalente</summary>
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Scalper as Scalper (Atacante)
-    participant Borda as Borda & Gateway (WAF)
-    participant Fila as Fila Virtual (Waiting Room)
-    participant Core as Motor de Checkout & Estoque
-    actor Legitimo as Consumidor Legítimo
-
-    Note over Scalper, Legitimo: RODADA 1: Força Bruta Monolítica vs. Rate Limiting Estático por IP
-    Scalper->>Borda: Flood de 1.000 req/s via único IP (VPS)
-    Borda-->>Scalper: HTTP 429 Too Many Requests (Rate Limit ativado)
-    Note over Scalper: [Observabilidade]: HTTP 429 e Retry-After. Infere bloqueio por IP.
-    Note over Scalper: [Adaptação para Rodada 2]: Adota pool de proxies residenciais rotativos.
-
-    Note over Scalper, Legitimo: RODADA 2: Pulverização de IPs vs. Fila com Desafio de Integridade
-    Scalper->>Borda: Requisições distribuídas via 500 IPs residenciais + contas sintéticas
-    Borda->>Fila: Tráfego suspeito redirecionado para a Waiting Room
-    Fila-->>Scalper: HTTP 302 Redirect + Desafio Proof-of-Work (PoW) e CAPTCHA
-    Scalper->>Core: Tentativa de checkout direto sem token de fila
-    Core-->>Scalper: HTTP 403 Forbidden (Token de fila ausente/inválido)
-    Note over Scalper: [Observabilidade]: Redirecionamento 302 e bloqueio 403. Scripts HTTP puros falham.
-    Note over Scalper: [Adaptação para Rodada 3]: Bots com navegadores headless e solvers de CAPTCHA.
-
-    Note over Scalper, Legitimo: RODADA 3: Guerra de Latência vs. Sorteio Ponderado por Reputação e 2FA
-    Scalper->>Fila: Bots resolvem desafio em ~1s e disputam fila
-    Legitimo->>Fila: Usuário legítimo ingressa na fila após 15s (digitação manual)
-    Note over Fila, Core: [Resposta da Plataforma]: Abandono do FIFO puro; Janela de 3 min com Sorteio Ponderado, limite 1 un./CPF e 2FA
-    Fila->>Core: Bilhetes elegíveis sorteados (priorizando contas legítimas)
-    Core->>Legitimo: Solicitação de 2FA via SMS/App
-    Legitimo->>Core: Confirmação do código 2FA
-    Core-->>Legitimo: HTTP 200 OK — Compra Concluída com Sucesso!
-    Core-->>Scalper: Contas sem histórico, inconsistentes ou com falha no 2FA descartadas
-    Note over Scalper: [Observabilidade]: Velocidade pura não garante estoque; desfecho estocástico e 2FA obrigatório.
-    Note over Scalper: [Adaptação / Inviabilidade Econômica]: Custo de fazendas de identidades reais supera o lucro esperado.
-```
-</details>
+Fonte editável: [PlantUML](diagramas/ciclo-adaptativo.puml).
 
 #### Perguntas de Análise Dinâmica
 
@@ -628,9 +582,9 @@ Para garantir total conformidade com o **Critério 5 da Rubrica de Avaliação**
 
 | Integrante | Responsabilidades Principais no Projeto | Seções Desenvolvidas no Relatório | Artefatos e Diagramas Responsáveis | Participação na Apresentação em Vídeo |
 | :--- | :--- | :--- | :--- | :--- |
-| **Rodrigo Thoma da Silva** | Definição da proposta, caracterização do sistema de Flash Sale, ativos críticos e pressupostos. | **Seção 1, Seção 2 e Seção 3.1** | `contexto.png`, `contexto.puml` e `contexto.mmd` | **Bloco 1 (Abertura):** Motivação da Black Friday, delimitação da interação e apresentação do diagrama de contexto (2 a 3 min). |
+| **Rodrigo Thoma da Silva** | Definição da proposta, caracterização do sistema de Flash Sale, ativos críticos e pressupostos. | **Seção 1, Seção 2 e Seção 3.1** | `contexto.png` e `contexto.puml` | **Bloco 1 (Abertura):** Motivação da Black Friday, delimitação da interação e apresentação do diagrama de contexto (2 a 3 min). |
 | **Fade Hassan Husein Kanaan** | Modelagem formal de Teoria dos Jogos (matriz 2x2), análise de dominância e desenho arquitetural para o T2. | **Seção 3.2 e Seção 4** | Matriz de Payoffs e Arquitetura de Componentes do T2 | **Bloco 2 (Modelo Estático & T2):** Explicação da matriz estática, prova de dominância do flood e visão arquitetural do T2 (2 a 3 min). |
-| **Artur Wahlbrink Kraemer** | Análise da evolução temporal em 3 rodadas, dinâmica de observabilidade e resposta à questão reflexiva final. | **Seção 3.3 e Seção 8** | `ciclo-adaptativo.png`, `ciclo-adaptativo.puml` e `ciclo-adaptativo.mmd` | **Bloco 3 (Modelo Dinâmico):** Evolução das 3 rodadas, vazamento de informação, corrida armamentista e reflexão final (2 a 3 min). |
+| **Artur Wahlbrink Kraemer** | Análise da evolução temporal em 3 rodadas, dinâmica de observabilidade e resposta à questão reflexiva final. | **Seção 3.3 e Seção 8** | `ciclo-adaptativo.png` e `ciclo-adaptativo.puml` | **Bloco 3 (Modelo Dinâmico):** Evolução das 3 rodadas, vazamento de informação, corrida armamentista e reflexão final (2 a 3 min). |
 | **Gabriel Camargo Ortiz** | Identificação da superfície de ataque, cálculo da matriz de riscos PxI, mitigação prioritária e referências. | **Seção 3.4, 5, 6 e 7** | `superficie-de-ataque.png`, `superficie-de-ataque.puml` e `referencias.md` | **Bloco 4 (Ameaças & Conclusão):** Superfície de ataque, cenários de ameaça, efeitos colaterais na defesa de A1 e encerramento (2 a 3 min). |
 
 ---
