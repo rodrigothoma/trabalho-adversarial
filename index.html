@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Análise de um Sistema Adversarial — Trabalho 1 (IngressosFlash)</title>
+
+  <!-- Reveal.js CSS (CDN) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/print/pdf.min.css" media="print">
+
+  <!-- Fonte Google Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Estilos Customizados Minimalistas -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Apresentação Reveal.js -->
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ===================================================================
+           SLIDE 1: CAPA & IDENTIFICAÇÃO
+           =================================================================== -->
+      <section data-transition="fade" style="top: 45px !important; padding-top: 1rem;">
+        <div style="max-width: 960px; margin: 0 auto;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
+            <div style="display: flex; gap: 0.5rem;">
+              <span class="badge badge-blue">Engenharia de Software Adversarial</span>
+              <span class="badge badge-green">Trabalho 1</span>
+            </div>
+            <img src="logo-unipampa.jpg" alt="UNIPAMPA" style="height: 58px; object-fit: contain;">
+          </div>
+
+          <h1 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 0.4rem; color: #0f172a;">
+            Análise de um Sistema Adversarial
+          </h1>
+          <h2 style="font-size: 1.25rem; font-weight: 500; color: #475569; margin-bottom: 1.4rem;">
+            Flash Sale de Black Friday: <span style="color: #dc2626; font-weight: 600;">Scalper Bots</span> vs. <span style="color: #2563eb; font-weight: 600;">Fair Checkout</span>
+          </h2>
+
+          <div class="card" style="margin-bottom: 1.2rem; background: #f8fafc; padding: 0.8rem 1.2rem;">
+            <div style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: #64748b; margin-bottom: 0.5rem;">
+              Integrantes do Grupo
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; font-size: 0.95rem; color: #0f172a;">
+              <div>Rodrigo Thoma da Silva</div>
+              <div>Fade Kanaan</div>
+              <div>Gabriel Camargo Ortiz</div>
+              <div>Artur Wahlbrink Kraemer</div>
+            </div>
+          </div>
+
+          <div style="font-size: 0.75rem; color: #94a3b8;">
+            <span>Universidade Federal do Pampa — Campus Alegrete</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 2: DELIMITAÇÃO DA INTERAÇÃO E CONFLITO (Rodrigo)
+           =================================================================== -->
+      <section data-transition="slide">
+        <div class="slide-header">
+          <h2>Delimitação da Interação e Conflito Adversarial</h2>
+          <span class="speaker-tag">Rodrigo Thoma</span>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">
+              <span class="badge badge-blue">Recorte Específico</span>
+              Abertura de Promoção Relâmpago
+            </div>
+            <p class="text-small">
+              O estudo foca na <strong>interação crítica de alta concorrência</strong> do sistema:
+            </p>
+            <div style="background: #f1f5f9; padding: 0.6rem; border-radius: 6px; font-family: var(--font-mono); font-size: 0.75rem; margin-bottom: 0.8rem;">
+              POST /api/v1/checkout/orders
+            </div>
+            <ul class="text-small" style="padding-left: 1.2rem; margin: 0;">
+              <li><strong>Item:</strong> 500 ingressos promocionais com 80% de desconto.</li>
+              <li><strong>Regra Oficial de Negócio:</strong> Limite de 1 unidade por CPF.</li>
+              <li><strong>Janela Crítica:</strong> Segundos iniciais de abertura da venda.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-title">
+              <span class="badge badge-red">Natureza Adversarial</span>
+              Conflito Intencional vs. Erro Acidental
+            </div>
+            <ul class="text-small" style="padding-left: 1.2rem; margin: 0;">
+              <li style="margin-bottom: 0.5rem;">
+                <strong>Agente Racional e Oportunista:</strong> O cambista calcula ativamente seu lucro econômico na revenda secundária (ágio de até 400%).
+              </li>
+              <li style="margin-bottom: 0.5rem;">
+                <strong>Adaptação Deliberada:</strong> O atacante estuda as defesas, pulveriza tráfego com proxies residenciais e quebra desafios de propósito.
+              </li>
+              <li>
+                <strong>Ativos em Disputa:</strong>
+                <span class="badge badge-green">Justiça Distributiva</span>
+                <span class="badge badge-blue">Disponibilidade</span>
+                <span class="badge badge-amber">Confiança</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="term-note">
+          <strong>Conceito Chave:</strong> <em>Scalper (Cambista digital):</em> Ator econômico racional que utiliza automação e bots para monopolizar estoques de itens escassos em segundos, visando revender no mercado paralelo por preços inflacionados com ágio abusivo.
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 3: DIAGRAMA DE CONTEXTO E ATORES (Rodrigo)
+           =================================================================== -->
+      <section data-transition="slide">
+        <div class="slide-header">
+          <h2>Atores, Capacidades e Pressupostos Críticos</h2>
+          <span class="speaker-tag">Rodrigo Thoma</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <!-- Tabela Estruturada de Atores -->
+          <table class="clean-table" style="font-size: 0.72rem; line-height: 1.35; margin: 0;">
+            <thead>
+              <tr style="background: #f1f5f9;">
+                <th style="width: 20%;">Ator & Papel</th>
+                <th style="width: 26%;">Objetivo & Ativos em Disputa</th>
+                <th style="width: 27%;">Ações / Capacidades</th>
+                <th style="width: 27%;">Informações & Custos / Restrições</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="vertical-align: top;">
+                  <strong style="color: #dc2626;">Operador de Scalper Bots</strong><br>
+                  <span class="badge badge-red" style="font-size: 0.65rem;">Atacante Racional</span>
+                </td>
+                <td style="vertical-align: top;">
+                  Monopolizar as 500 unidades para revenda no mercado secundário com ágio de até 400%.
+                </td>
+                <td style="vertical-align: top;">
+                  Flood concorrente massivo, pool de proxies residenciais, automação headless e contas sintéticas.
+                </td>
+                <td style="vertical-align: top;">
+                  <strong>Observa:</strong> Status HTTP (429, 403), tempo de resposta e telas de fila.<br>
+                  <strong>Custos:</strong> Proxies por GB, solvers de captcha e risco de cancelamento.
+                </td>
+              </tr>
+              <tr>
+                <td style="vertical-align: top;">
+                  <strong style="color: #2563eb;">Plataforma de E-Commerce</strong><br>
+                  <span class="badge badge-blue" style="font-size: 0.65rem;">Defensor</span>
+                </td>
+                <td style="vertical-align: top;">
+                  Garantir alocação justa (1 un/CPF), estabilidade operacional da API e reputação da marca.
+                </td>
+                <td style="vertical-align: top;">
+                  Rate Limiting, sala de espera (Waiting Room), desafio Proof-of-Work, validação cadastral e sorteio.
+                </td>
+                <td style="vertical-align: top;">
+                  <strong>Observa:</strong> Taxa req/s por IP/ASN, fingerprints TLS/Canvas e telemetria de tela.<br>
+                  <strong>Custos:</strong> Nuvem/WAF, risco de falsos positivos e atrito com clientes legítimos.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Pressupostos Críticos e Modos de Falha -->
+          <div class="grid-2" style="margin-top: 0.1rem;">
+            <div class="card" style="border-left: 3px solid #d97706; padding: 0.45rem 0.8rem; background: #fffbeb;">
+              <div class="card-title text-small" style="margin-bottom: 0.2rem; color: #b45309;">
+                Pressuposto 1: Identidade Única (1 Conta = 1 Pessoa)
+              </div>
+              <p class="text-xs" style="margin: 0; color: #78350f;">
+                <strong>Modo de Falha (Ataque Sybil):</strong> O atacante cria centenas de contas laranjas com CPFs sintéticos ou de terceiros, burlando o limite de 1 unidade por CPF.
+              </p>
+            </div>
+
+            <div class="card" style="border-left: 3px solid #dc2626; padding: 0.45rem 0.8rem; background: #fef2f2;">
+              <div class="card-title text-small" style="margin-bottom: 0.2rem; color: #991b1b;">
+                Pressuposto 2: Latência Justa (FIFO é Equitativo)
+              </div>
+              <p class="text-xs" style="margin: 0; color: #7f1d1d;">
+                <strong>Modo de Falha (Vantagem da Máquina):</strong> Scripts em nuvem disparam em &lt; 50ms, enquanto um humano na interface leva de 2 a 4 segundos. O FIFO puro entrega 100% aos robôs.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="term-note">
+          <strong>Conceito Chave:</strong> <em>Ataque Sybil:</em> Estratégia em que uma única entidade cria e opera centenas de identidades falsas (contas ou CPFs sintéticos) para simular múltiplos usuários distintos e burlar a regra de cota máxima por comprador.
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 4: MODELO ESTRATÉGICO ESTÁTICO (Fade)
+           =================================================================== -->
+      <section data-transition="slide">
+        <div class="slide-header">
+          <h2>Modelo Estratégico Estático: Teoria dos Jogos (2x2)</h2>
+          <span class="speaker-tag">Fade Kanaan</span>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <table class="clean-table game-matrix">
+              <thead>
+                <tr>
+                  <th style="background: #f8fafc; font-size: 0.75rem;">Scalper (A) \ E-Commerce (B)</th>
+                  <th style="font-size: 0.8rem;">B1: Checkout Direto FIFO<br><span class="text-muted" style="font-weight: 400;">(Sem Fricção)</span></th>
+                  <th style="font-size: 0.8rem;">B2: Fila com Desafios<br><span class="text-muted" style="font-weight: 400;">(Defesa Ativa)</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight: 600; font-size: 0.8rem;">A1: Flood de Bots<br><span class="text-muted" style="font-weight: 400;">(Automação)</span></td>
+                  <td style="font-size: 1.1rem; font-weight: 700; color: #dc2626;">(3, 0)</td>
+                  <td class="nash-cell" style="font-size: 1.1rem; font-weight: 700; color: #d97706;">
+                    (1, 2)
+                    <span class="nash-badge">NASH</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600; font-size: 0.8rem;">A2: Compra Manual<br><span class="text-muted" style="font-weight: 400;">(Humana)</span></td>
+                  <td style="font-size: 1.1rem; font-weight: 700; color: #059669;">(2, 3)</td>
+                  <td style="font-size: 1.1rem; font-weight: 700; color: #64748b;">(0, 1)</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="text-xs text-muted" style="margin-top: 0.4rem;">
+              * Ordem dos payoffs: (Payoff do Scalper, Payoff da Plataforma). Escala ordinal: 3 (melhor) a 0 (pior).
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <div class="card">
+              <div class="card-title text-small">
+                <span class="badge badge-red">Estratégia Dominante</span>
+                A1 (Flood) Domina Estritamente A2
+              </div>
+              <p class="text-xs" style="margin: 0;">
+                Se a plataforma adotar B1: 3 > 2. Se adotar B2: 1 > 0.<br>
+                Para o cambista, <strong>automatizar é racionalmente superior</strong> em qualquer hipótese, independente da ação escolhida pelo defensor.
+              </p>
+            </div>
+
+            <div class="card">
+              <div class="card-title text-small">
+                <span class="badge badge-amber">Equilíbrio de Nash</span>
+                Único em Estratégias Puras: (A1, B2)
+              </div>
+              <p class="text-xs" style="margin: 0;">
+                No ponto (1, 2), nenhum jogador ganha desviando sozinho: se o Scalper desviar para A2, seu payoff cai de 1 para 0; se a Plataforma desviar para B1, seu payoff cai de 2 para 0.
+              </p>
+            </div>
+
+            <div class="card" style="background: #fef2f2; border-color: #fecaca;">
+              <div class="card-title text-small" style="color: #991b1b;">
+                Ineficiência de Pareto (Dilema da Segurança)
+              </div>
+              <p class="text-xs" style="margin: 0;">
+                O ótimo cooperativo seria (A2, B1) com soma de utilidade 5 (2+3). A tentação de trapacear arrasta o sistema para o equilíbrio de segurança (1, 2) com soma 3.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="term-note">
+          <strong>Conceito Chave:</strong> <em>Equilíbrio de Nash:</em> Ponto estável onde nenhum participante melhora mudando de ação unilateralmente. <em>Ineficiência de Pareto:</em> Cenário onde a desconfiança mútua obriga a gastos de segurança, gerando bem-estar inferior ao ótimo cooperativo.
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 5: SIMULAÇÃO VISUAL DE CONCORRÊNCIA (Fade)
+           =================================================================== -->
+      <section data-transition="slide">
+        <div class="slide-header">
+          <h2>Simulação de Concorrência: Disputa dos 500 Ingressos</h2>
+          <span class="speaker-tag">Fade Kanaan</span>
+        </div>
+
+        <div class="sim-container">
+          <!-- Coluna 1: Controles e Grade de 500 Ingressos -->
+          <div>
+            <div class="sim-controls">
+              <button class="sim-btn sim-btn-red" onclick="runSimulationScenario1()">
+                Cenário 1: FIFO Puro (Sem Defesa)
+              </button>
+              <button class="sim-btn sim-btn-green" onclick="runSimulationScenario2()">
+                Cenário 2: Fila Adaptativa + Sorteio
+              </button>
+              <button class="sim-btn sim-btn-reset" onclick="resetSimulation()">
+                Reiniciar
+              </button>
+            </div>
+
+            <div style="font-size: 0.75rem; font-weight: 600; color: #475569; margin-bottom: 0.3rem; display: flex; justify-content: space-between;">
+              <span>Estoque Promocional (500 Ingressos):</span>
+              <span id="sim-remaining">500 / 500</span>
+            </div>
+
+            <!-- Grade de 500 Pontos -->
+            <div class="stock-grid" id="stock-grid"></div>
+
+            <div style="display: flex; gap: 1rem; font-size: 0.7rem; margin-top: 0.4rem; justify-content: center;">
+              <span>Disponível</span>
+              <span style="color: var(--accent-red); font-weight: 600;">Scalper Bot</span>
+              <span style="color: var(--accent-green); font-weight: 600;">Consumidor Legítimo</span>
+            </div>
+          </div>
+
+          <!-- Coluna 2: Telemetria e Fases Explicativas Empilhadas -->
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <div class="card" style="background: #f8fafc; padding: 0.7rem 0.9rem;">
+              <div class="card-title text-small" style="margin-bottom: 0.3rem;">
+                Telemetria de Concorrência
+              </div>
+
+              <div class="telemetry-row">
+                <span class="text-muted">Status do Gateway:</span>
+                <span id="sim-gateway-status" class="badge badge-blue">Gateway Ocioso</span>
+              </div>
+
+              <div class="telemetry-row">
+                <span class="text-muted">Tempo Decorrido:</span>
+                <span id="sim-time" style="font-family: var(--font-mono); font-weight: 700;">0 ms</span>
+              </div>
+
+              <div style="margin-top: 0.3rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                  <span style="color: var(--accent-red); font-weight: 600;">Bots (Scalpers):</span>
+                  <span id="sim-bots" style="font-family: var(--font-mono); font-weight: 700;">0 (0%)</span>
+                </div>
+                <div class="sim-progress-track">
+                  <div id="sim-bar-bots" class="sim-progress-bot"></div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                  <span style="color: var(--accent-green); font-weight: 600;">Humanos (Legítimos):</span>
+                  <span id="sim-humans" style="font-family: var(--font-mono); font-weight: 700;">0 (0%)</span>
+                </div>
+                <div class="sim-progress-track">
+                  <div id="sim-bar-humans" class="sim-progress-human"></div>
+                </div>
+              </div>
+
+              <div style="margin-top: 0.3rem; padding-top: 0.2rem; border-top: 1px solid var(--border-subtle);">
+                <div class="text-muted text-xs" style="margin-bottom: 0.2rem;">Resultado de Justiça Distributiva:</div>
+                <div id="sim-fairness" class="badge badge-blue" style="font-size: 0.72rem; width: 100%; box-sizing: border-box; justify-content: center; padding: 0.3rem;">
+                  Aguardando Início da Promoção
+                </div>
+              </div>
+            </div>
+
+            <!-- Fases Explicativas Empilhadas (Permanentes) -->
+            <div class="card" style="padding: 0.5rem 0.8rem; background: #ffffff; border-left: 3px solid var(--accent-blue);">
+              <div style="font-size: 0.68rem; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 0.3rem;" id="sim-scenario-title">
+                Fases da Interação Adversarial:
+              </div>
+              <div id="sim-steps" style="display: flex; flex-direction: column; gap: 0.35rem;">
+                <div id="sim-step-1" class="sim-step">
+                  <strong>1. Selecione um cenário</strong> nos botões acima para iniciar.
+                </div>
+                <div id="sim-step-2" class="sim-step">
+                  <strong>2. Três fases explicativas</strong> serão apresentadas sequencialmente.
+                </div>
+                <div id="sim-step-3" class="sim-step">
+                  <strong>3. Acompanhe a ocupação</strong> dos 500 ingressos no painel.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 7: MODELO DINÂMICO - O CICLO ADAPTATIVO (Artur)
+           =================================================================== -->
+      <section data-transition="slide">
+        <div class="slide-header">
+          <h2>Modelo Dinâmico: A Corrida Armamentista em 3 Rodadas</h2>
+          <span class="speaker-tag">Gabriel Ortiz</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+          <!-- Tabela Estruturada das 3 Rodadas Adversariais -->
+          <table class="clean-table" style="font-size: 0.73rem; line-height: 1.35; margin: 0;">
+            <thead>
+              <tr style="background: #f1f5f9;">
+                <th style="width: 10%; text-align: center;">Rodada</th>
+                <th style="width: 22%;">Ação do Scalper (Atacante)</th>
+                <th style="width: 22%;">Resposta da Plataforma (Defesa)</th>
+                <th style="width: 23%;">O que se Torna Observável?</th>
+                <th style="width: 23%;">Adaptação Resultante</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: center; vertical-align: top;">
+                  <span class="badge badge-red" style="font-size: 0.72rem;">1ª Rodada</span><br>
+                  <span style="font-size: 0.65rem; color: #64748b;">Força Bruta</span>
+                </td>
+                <td style="vertical-align: top;">
+                  <strong>Ataque Concentrado:</strong><br>
+                  Flood de 1.000 req/s via único IP/VPS, explorando a velocidade de rede do FIFO puro.
+                </td>
+                <td style="vertical-align: top;">
+                  <strong>Rate Limiting por IP:</strong><br>
+                  A plataforma detecta tráfego anômalo e bloqueia temporariamente com <code>HTTP 429 Too Many Requests</code>.
+                </td>
+                <td style="vertical-align: top;">
+                  <strong>Status 429 e Retry-After:</strong><br>
+                  Atacante percebe que a barreira é puramente volumétrica baseada no IP de origem.
+                </td>
+                <td style="vertical-align: top;">
+                  <span class="badge badge-amber" style="margin-bottom: 0.2rem;">Distribuição de IPs</span><br>
+                  Migração para pool rotativo de <strong>proxies residenciais</strong> para diluir requisições.
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: top;">
+                  <span class="badge badge-amber" style="font-size: 0.72rem;">2ª Rodada</span><br>
+                  <span style="font-size: 0.65rem; color: #64748b;">Pulverização</span>
+                </td>
+                <td style="vertical-align: top;">
+                  <strong>Ataque Distribuído:</strong><br>
+                  Disparos por centenas de IPs residenciais e contas sintéticas (Ataque Sybil).
+                </td>
+                <td style="vertical-align: top;">
+                  <strong>Fila Virtual + PoW + Token:</strong><br>
+                  Redirecionamento para Waiting Room (<code>302</code>), desafio Proof-of-Work e bloqueio <code>403</code> sem token.
+                </td>
+                <td style="vertical-align: top;">
+                  <strong>Bloqueio 403 e Fila 302:</strong><br>
+                  Scripts HTTP simples falham; atacante descobre que precisa executar JavaScript e calcular hash.
+                </td>
+                <td style="vertical-align: top;">
+                  <span class="badge badge-blue" style="margin-bottom: 0.2rem;">Automação de Navegador</span><br>
+                  Adoção de navegadores <em>headless</em> (Playwright) com solvers de desafio criptográfico.
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: top;">
+                  <span class="badge badge-green" style="font-size: 0.72rem;">3ª Rodada</span><br>
+                  <span style="font-size: 0.65rem; color: #64748b;">Sofisticação</span>
+                </td>
+                <td style="vertical-align: top;">
+                  <strong>Bots Headless Avançados:</strong><br>
+                  Navegadores resolvem PoW, emulam comportamento humano e disputam as vagas.
+                </td>
+                <td style="vertical-align: top;">
+                  <strong>Sorteio Ponderado + 2FA:</strong><br>
+                  Fim do FIFO: janela de entrada, sorteio ponderado por histórico, 1 un/CPF e <strong>2FA via SMS</strong>.
+                </td>
+                <td style="vertical-align: top;">
+                  <strong>Fim da Vantagem FIFO:</strong><br>
+                  Velocidade perde valor; contas novas têm peso ínfimo; barreira do SMS real.
+                </td>
+                <td style="vertical-align: top;">
+                  <span class="badge badge-red" style="margin-bottom: 0.2rem;">Guerra de Custos / Abandono</span><br>
+                  Obrigado a usar contas reais e chips SIM; <strong>custo marginal supera o lucro da revenda</strong>.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="term-note" style="margin: 0; width: 100%; box-sizing: border-box;">
+            <strong>Conceito Chave:</strong> <em>Corrida Armamentista & Adaptação:</em> Cada resposta defensiva (429, fila virtual, sorteio) emite sinais de observabilidade que o atacante estuda para formular novas contramedidas (proxies, headless, SIM farms).
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 8: ANÁLISE DINÂMICA E PERGUNTA REFLEXIVA (Artur)
+           =================================================================== -->
+      <section data-transition="slide">
+        <div class="slide-header">
+          <h2>Análise Dinâmica e Pergunta Reflexiva</h2>
+          <span class="speaker-tag">Gabriel Ortiz</span>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">
+              <span class="badge badge-blue">Dinâmica da Interação</span>
+              Quem Observa Quem & Custos
+            </div>
+            <ul class="text-small" style="padding-left: 1.2rem; margin: 0;">
+              <li style="margin-bottom: 0.4rem;">
+                <strong>O que o atacante observa:</strong> Status HTTP, cabeçalhos, tempo de resposta e telas de fila. Isso revela os critérios de defesa.
+              </li>
+              <li style="margin-bottom: 0.4rem;">
+                <strong>O que a plataforma observa:</strong> Volume de tráfego, fingerprints de TLS/navegador, consistência cadastral e telemetria de interação.
+              </li>
+              <li style="margin-bottom: 0.4rem;">
+                <strong>Custos de Adaptação:</strong> O atacante gasta com proxies e IA; a plataforma investe em infraestrutura de borda e sofre com falsos positivos.
+              </li>
+              <li>
+                <strong>Efeitos Colaterais em Legítimos:</strong> Espera obrigatória na sala, ansiedade do sorteio e atrito para digitação de SMS/2FA.
+              </li>
+            </ul>
+          </div>
+
+          <div class="card" style="background: #f8fafc; border-left: 4px solid var(--accent-amber);">
+            <div class="card-title">
+              <span class="badge badge-amber">Questão Reflexiva da Rubrica</span>
+              O que o outro lado aprenderá e tentará fazer?
+            </div>
+            <p class="text-small" style="font-style: italic; color: #334155; margin-bottom: 0.6rem;">
+              "Depois que o sistema responder com Sorteio Ponderado e 2FA, o que o atacante aprende e qual é o seu próximo passo?"
+            </p>
+            <div class="text-xs" style="line-height: 1.5; color: #0f172a;">
+              <strong>1. O Aprendizado:</strong> A disputa deixa de ser por <em>velocidade de rede (latência)</em> e passa a ser por <strong>reputação de identidade</strong>. Contas novas e anônimas tornam-se ineficazes.<br><br>
+              <strong>2. A Próxima Adaptação:</strong> O atacante migra para <em>ataques híbridos com humanos</em>: compra de contas antigas com histórico ("aged accounts"), contratação de pessoas reais para receber SMS ou micro-trabalhadores remunerados.<br><br>
+              <strong>3. O Ponto de Inviabilidade:</strong> O custo marginal por unidade adquirida aproxima-se do valor de revenda no mercado secundário, <strong>inviabilizando o modelo de negócio do scalper</strong>.
+            </div>
+          </div>
+        </div>
+
+        <div class="term-note">
+          <strong>Conceito Chave:</strong> <em>Efeito Colateral & Fricção:</em> Custo operacional imposto aos consumidores de boa-fé em razão das defesas, abrangendo aumento no tempo de checkout, bloqueios acidentais (falsos positivos) e frustração com verificações adicionais.
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 9: SUPERFÍCIE DE ATAQUE (Artur)
+           =================================================================== -->
+      <section data-transition="slide">
+        <div class="slide-header">
+          <h2>Superfície de Ataque e Pontos de Exploração</h2>
+          <span class="speaker-tag">Artur Kraemer</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <!-- Tabela Estruturada de Superfície de Ataque -->
+          <table class="clean-table" style="font-size: 0.73rem; line-height: 1.35; margin: 0;">
+            <thead>
+              <tr style="background: #f1f5f9;">
+                <th style="width: 8%; text-align: center;">Ponto</th>
+                <th style="width: 25%;">Interface & Componente</th>
+                <th style="width: 32%;">Mecanismo de Exploração (Vetor de Ataque)</th>
+                <th style="width: 35%;">Impacto no Negócio / Ativo Ameaçado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: center; vertical-align: top;">
+                  <span class="badge badge-red">P1</span>
+                </td>
+                <td style="vertical-align: top;">
+                  <code>POST /api/v1/checkout/orders</code><br>
+                  <strong>Motor de Checkout & Estoque</strong>
+                </td>
+                <td style="vertical-align: top;">
+                  Flood concorrente massivo na abertura da venda, explorando a latência de rede para vencer o FIFO antes de humanos.
+                </td>
+                <td style="vertical-align: top;">
+                  <strong>Quebra da Justiça Distributiva:</strong> Esgotamento das 500 unidades promocionais em milissegundos por robôs.
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: top;">
+                  <span class="badge badge-amber">P2</span>
+                </td>
+                <td style="vertical-align: top;">
+                  <code>POST /api/v1/auth/register</code><br>
+                  <strong>Serviço de Identidade & Contas</strong>
+                </td>
+                <td style="vertical-align: top;">
+                  Criação em lote de identidades sintéticas (Ataque Sybil) utilizando dados vazados ou geradores de CPF.
+                </td>
+                <td style="vertical-align: top;">
+                  <strong>Burla da Regra de Negócio:</strong> Invalidação do limite de 1 unidade por CPF e alocação desleal de estoque.
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: center; vertical-align: top;">
+                  <span class="badge badge-blue">P3</span>
+                </td>
+                <td style="vertical-align: top;">
+                  <code>PUT /api/v1/cart/reserve</code><br>
+                  <strong>Cache de Sessão & Locks de Carrinho</strong>
+                </td>
+                <td style="vertical-align: top;">
+                  Reserva temporária abusiva de itens por 10 minutos (<em>Holding Lock</em>) com posterior abandono sem pagamento.
+                </td>
+                <td style="vertical-align: top;">
+                  <strong>Negação de Estoque (<em>Denial of Inventory</em>):</strong> Bloqueio artificial de ingressos legítimos sem custo financeiro.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="term-note" style="margin: 0; width: 100%; box-sizing: border-box;">
+            <strong>Conceito Chave:</strong> <em>Holding Lock de Carrinho:</em> Bloqueio temporário do item para pagamento; quando abusado, permite que atacantes reservem todo o estoque sem pagar, causando negação de estoque (<em>Denial of Inventory</em>).
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 10: CENÁRIOS DE AMEAÇA E MATRIZ DE RISCOS (Artur)
+           =================================================================== -->
+      <section data-transition="slide">
+        <div class="slide-header">
+          <h2>Cenários de Ameaça e Matriz de Riscos</h2>
+          <span class="speaker-tag">Artur Kraemer</span>
+        </div>
+
+        <div style="margin-bottom: 0.6rem;">
+          <table class="clean-table" style="font-size: 0.75rem;">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Cenário de Ameaça</th>
+                <th>Ponto de Exploração</th>
+                <th>Ativo Afetado</th>
+                <th style="text-align: center;">P</th>
+                <th style="text-align: center;">I</th>
+                <th style="text-align: center;">Risco (P×I)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="background: #fef2f2;">
+                <td><strong>A1</strong></td>
+                <td>Flood automatizado no checkout concorrente</td>
+                <td>P1 (Checkout API)</td>
+                <td>Justiça & Disponibilidade</td>
+                <td style="text-align: center;">3</td>
+                <td style="text-align: center;">3</td>
+                <td style="text-align: center;"><span class="badge badge-red">9 (Crítico)</span></td>
+              </tr>
+              <tr style="background: #fffbeb;">
+                <td><strong>A2</strong></td>
+                <td>Criação em lote de identidades falsas (Sybil)</td>
+                <td>P2 (Auth API)</td>
+                <td>Justiça Distributiva</td>
+                <td style="text-align: center;">3</td>
+                <td style="text-align: center;">2</td>
+                <td style="text-align: center;"><span class="badge badge-amber">6 (Alto)</span></td>
+              </tr>
+              <tr>
+                <td><strong>A3</strong></td>
+                <td>Retenção artificial de estoque no carrinho</td>
+                <td>P3 (Cart Lock)</td>
+                <td>Confiança & Disponibilidade</td>
+                <td style="text-align: center;">2</td>
+                <td style="text-align: center;">2</td>
+                <td style="text-align: center;"><span class="badge badge-blue">4 (Médio)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card" style="background: #f8fafc; border-left: 4px solid var(--accent-red);">
+          <div class="card-title text-small">
+            Ameaça de Maior Prioridade (A1) — Análise Aprofundada
+          </div>
+          <div class="grid-2 text-xs">
+            <div>
+              • <strong>Resposta Defensiva:</strong> Fila Virtual desacoplada com token criptográfico HMAC emitido somente após validação de PoW.<br>
+              • <strong>Efeito Colateral em Legítimos:</strong> Aumento do tempo total de compra e atrito na experiência do usuário.
+            </div>
+            <div>
+              • <strong>Informação Revelada:</strong> Erros 403 e 302 informam aos atacantes a exigência do token assinado.<br>
+              • <strong>Risco Residual:</strong> Bots avançados com resolução de JS e headless ainda disputam uma fração residual de vagas.
+            </div>
+          </div>
+        </div>
+
+        <div class="term-note">
+          <strong>Conceito Chave:</strong> <em>Risco Residual:</em> O nível de ameaça que permanece ativo após a implementação das defesas (ex.: atacantes com CPFs reais comprados), devendo ser conscientemente monitorado e absorvido pelo apetite de risco da organização.
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 11: SÍNTESE DO RESULTADO E O PAPEL DOS DIAGRAMAS (Artur)
+           =================================================================== -->
+      <section data-transition="slide">
+        <div class="slide-header">
+          <h2>Síntese do Resultado e o Papel dos Três Diagramas</h2>
+          <span class="speaker-tag">Artur Kraemer</span>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-title text-small">
+              <span class="badge badge-blue">1. Síntese & Os 3 Diagramas</span>
+            </div>
+            <p class="text-xs" style="line-height: 1.45;">
+              A vulnerabilidade central não é erro de código, mas <strong>incentivos econômicos</strong>:<br>
+              • <strong>Contexto:</strong> Evidenciou a quebra dos pressupostos (1 CPF ≠ 1 pessoa; 50ms ≠ justiça).<br>
+              • <strong>Ciclo Adaptativo:</strong> Revelou a dinâmica da corrida armamentista em 3 rodadas.<br>
+              • <strong>Superfície de Ataque:</strong> Localizou os pontos críticos de acoplamento (checkout, auth e reserva).
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-title text-small">
+              <span class="badge badge-green">2. Resposta à Prioritária (A1)</span>
+            </div>
+            <p class="text-xs" style="line-height: 1.45;">
+              Para neutralizar o flood de bots no checkout:<br>
+              • <strong>Desacoplamento por Fila:</strong> Waiting Room isola o tráfego e emite token HMAC.<br>
+              • <strong>Proof of Work (PoW):</strong> Custo computacional quebra a viabilidade de flood massivo.<br>
+              • <strong>Sorteio Ponderado + 2FA SMS:</strong> Remove a vantagem de velocidade do FIFO e exige posse física de SIM cards.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-title text-small">
+              <span class="badge badge-amber">3. Adaptação & Risco Residual</span>
+            </div>
+            <p class="text-xs" style="line-height: 1.45;">
+              • <strong>Próxima Adaptação do Atacante:</strong> Migração para o mercado cinzento (compra de contas antigas e contratação de terceiros para SMS).<br>
+              • <strong>Ponto de Inviabilidade:</strong> Custo marginal por ingresso atinge o valor de revenda.<br>
+              • <strong>Risco Residual:</strong> Fração residual (~13%) absorvida pelo negócio; 87%+ entregues a humanos.
+            </p>
+          </div>
+        </div>
+
+        <div class="term-note">
+          <strong>Conceito Chave:</strong> <em>Defesa em Profundidade:</em> Princípio arquitetural que sobrepõe camadas defensivas independentes (borda, fila e core), assegurando que o comprometimento de uma barreira não resulte na quebra integral da segurança do sistema.
+        </div>
+      </section>
+
+      <!-- ===================================================================
+           SLIDE 12: CONCLUSÃO, REFERÊNCIAS E DECLARAÇÃO DE IA
+           =================================================================== -->
+      <section data-transition="fade">
+        <div class="slide-header">
+          <h2>Conclusão, Referências e Contribuições</h2>
+        </div>
+
+        <div class="grid-3" style="margin-bottom: 0.8rem;">
+          <div class="card" style="padding: 0.8rem 1rem;">
+            <div class="card-title text-small">
+              <span class="badge badge-blue">Referências</span>
+            </div>
+            <ul class="text-xs" style="padding-left: 1.1rem; margin: 0; line-height: 1.5;">
+              <li><strong>QUINCOZES, Silvio.</strong> Aulas e Conteúdos de Eng. de Software Adversarial. UNIPAMPA, 2026.</li>
+              <li><strong>OWASP.</strong> Automated Threats (OAT-005 Scalping, OAT-007 Credential Stuffing).</li>
+              <li><strong>NASH, John.</strong> Non-Cooperative Games. Annals of Mathematics, 1951.</li>
+              <li><strong>CLOUDFLARE.</strong> Waiting Rooms & Bot Management in Flash Sales.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="padding: 0.8rem 1rem;">
+            <div class="card-title text-small">
+              <span class="badge badge-green">Declaração de Uso de IA</span>
+            </div>
+            <p class="text-xs" style="margin: 0; line-height: 1.45; color: #334155;">
+              Utilizado modelo de linguagem (LLM) como ferramenta consultiva de suporte para formatação de documentação, validação ortográfica e estruturação da apresentação em Reveal.js, sob <strong>total supervisão, análise crítica e validação técnica</strong> de todos os integrantes do grupo.
+            </p>
+          </div>
+
+          <div class="card" style="padding: 0.8rem 1rem;">
+            <div class="card-title text-small">
+              <span class="badge badge-amber">Contribuições Individuais</span>
+            </div>
+            <ul class="text-xs" style="padding-left: 1.1rem; margin: 0; line-height: 1.45; color: #334155;">
+              <li><strong>Rodrigo Thoma:</strong> Delimitação, mapeamento de atores e pressupostos.</li>
+              <li><strong>Fade Kanaan:</strong> Teoria dos Jogos (2x2), Nash e simulação interativa.</li>
+              <li><strong>Gabriel Ortiz:</strong> Modelo dinâmico (3 rodadas) e observabilidade.</li>
+              <li><strong>Artur Kraemer:</strong> Superfície de ataque, matriz de riscos e síntese.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card" style="text-align: center; background: #f8fafc; padding: 0.8rem 1.2rem;">
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.2rem; color: #0f172a;">Agradecemos a Atenção!</h3>
+          <p class="text-small text-muted" style="margin: 0;">
+            Estamos à disposição dos professores e colegas para responder às perguntas.
+          </p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Scripts: Reveal.js (CDN) e Motor de Simulação -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+  <script src="simulation.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: 'c/t',
+      controls: false,
+      progress: false,
+      center: true,
+      transition: 'slide',
+      transitionSpeed: 'fast',
+      backgroundTransition: 'fade',
+      pdfMaxPagesPerSlide: 1,
+      pdfSeparateFragments: false,
+      width: 1200,
+      height: 700,
+      margin: 0.04,
+      minScale: 0.2,
+      maxScale: 2.0
+    });
+  </script>
+</body>
+</html>
